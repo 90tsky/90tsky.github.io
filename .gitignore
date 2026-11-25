@@ -1,0 +1,15 @@
+# Kept on Kris's computer only. The repo is public (free GitHub Pages), so anything in it can be read by anyone.
+# Notes (they mention clients and private details)
+CHANGES.md
+DESIGN.md
+.claude/
+# Tuning panel: still opens with ?tune on this computer; online, ?tune does nothing
+next-tune.js
+# Tools, not part of the site
+node_modules/
+package.json
+package-lock.json
+# System files
+Thumbs.db
+desktop.ini
+.DS_Store

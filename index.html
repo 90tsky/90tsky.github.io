@@ -1,0 +1,755 @@
+<!doctype html>
+<html lang="en">
+<!-- Christian Marchew: portfolio. One page; next.css and next.js are its style and behaviour (the names are left from the test layout, which became the site on 25 Nov). -->
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Christian Marchew · Portfolio</title>
+<meta name="description" content="Christian Marchew designs apps, dashboards, posters and brands.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Christian Marchew · Portfolio">
+<meta property="og:description" content="Christian Marchew designs apps, dashboards, posters and brands.">
+<meta property="og:url" content="https://christian-marchew.com/">
+<link rel="canonical" href="https://christian-marchew.com/">
+<meta name="theme-color" content="#f9f9f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#141517" media="(prefers-color-scheme: dark)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="next.css">
+<!-- Laptop layout (Kris's sketch, 13 Nov): decided before the first paint so the page doesn't jump; main.js keeps it in step. -->
+<script>if (matchMedia('(min-width: 900px) and (min-height: 560px)').matches) document.documentElement.classList.add('is-app');</script>
+<script defer src="next.js"></script>
+<script defer src="chrome-logo.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#projects">Skip to the projects</a>
+<main>
+
+<!-- Opening screen. The "Show first" buttons were removed on 15 Nov (Kris): the order below is fixed. -->
+<section class="intro snap" id="intro">
+  <div class="in">
+    <h1>Hi, I’m Kris.</h1>
+    <p class="intro-sub">I design apps, dashboards, posters and brands.</p>
+  </div>
+</section>
+
+<!-- Projects, in their order (Kris, 15 Nov): Apps & UI first, then graphic design. main.js builds the project list
+     (the bar of cards at the bottom, grouped by data-group) from each section's p-head, so titles and descriptions live only here.
+     --x/--y/--w place a piece on phones (% of a 5:4 box); --dx/--dy/--dw on laptops (% of a 2:1 box across the screen). -->
+<div id="projects">
+
+  <!-- blend: the one fully built section. Texts are drafts from Blend/CASE-STUDY-NOTES.md. -->
+  <section class="project snap" id="blend" data-group="Applications and UI/UX" data-story aria-labelledby="blend-title">
+    <div class="in">
+      <div class="p-head">
+        <p class="p-eye">Apps &amp; UI · shop app</p>
+        <h2 class="p-title" id="blend-title">blend</h2>
+        <p class="p-desc">A sustainable clothing shop built on a capsule wardrobe: every top goes with every bottom. In the change room you mix the pieces before you buy them.</p>
+      </div>
+      <div class="p-body">
+        <div class="dots" role="group" aria-label="Decisions in blend">
+          <button type="button" class="dot" data-label="Capsule" aria-pressed="true"><span class="pill"><i></i><span class="lbl">Capsule</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Where it started" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Where it started</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Next in line" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Next in line</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="The frame" aria-pressed="false"><span class="pill"><i></i><span class="lbl">The frame</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="The notch" aria-pressed="false"><span class="pill"><i></i><span class="lbl">The notch</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Try-On" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Try-On</span><span class="bar"></span></span></button>
+        </div>
+        <div class="steps">
+          <div class="step is-on">
+            <p class="s-k">Capsule</p>
+            <p class="s-line">Every piece goes with every other, so fewer pieces make more outfits.</p>
+            <details class="s-why"><summary>Why?</summary><div class="s-why-body">
+              <p>blend had to be a sustainable shop, and it needed something its competitors don’t have.</p>
+              <p>That something is a capsule wardrobe. Every piece in an event is chosen to go with every other piece, so fewer pieces make more outfits. With 3 tops and 2 bottoms you already have 6 outfits, and you try them all in the change room.</p>
+            </div></details>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Where it started</p>
+            <p class="s-line">From a full shop to 2 tabs: Events and the change room.</p>
+            <details class="s-why"><summary>Why?</summary><div class="s-why-body">
+              <p>It began as a full sustainable fashion shop, with women’s and men’s sections, a blog and designer accounts. That was too much to show the one idea that mattered.</p>
+              <p>So it was cut down to 2 tabs. You shop by occasion in Events, then mix the pieces in the change room.</p>
+            </div></details>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Next in line</p>
+            <p class="s-line">The newest piece waits small beside the one you’re wearing.</p>
+            <details class="s-why"><summary>Why?</summary><div class="s-why-body">
+              <p>When the piece you’d just added filled the row, nothing showed that the row scrolls. In informal tests with friends, people went to the small piece first.</p>
+              <p>Now, from a row’s second piece on, the newest piece waits small in the next spot, and the one before it stays large. The Try it on button dresses the large pieces: what’s large is what you’re wearing. Swiping turns the row like a ring, so pieces come in from past the edge instead of appearing from nothing.</p>
+            </div></details>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">The frame</p>
+            <p class="s-line">Warm grey keeps dark pieces visible and defines the change room.</p>
+            <details class="s-why"><summary>Why?</summary><div class="s-why-body">
+              <p>In dark mode, black clothes almost vanished on the dark background, and an empty change room lost its shape.</p>
+              <p>A warm grey frame now sits behind the clothes and stays in every state. A glow was the other option, but the frame does 2 jobs: it keeps dark pieces visible and it defines the change room.</p>
+            </div></details>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">The notch</p>
+            <p class="s-line">An even 12px gap where the frame bends around the button.</p>
+            <details class="s-why"><summary>Why?</summary><div class="s-why-body">
+              <p>The Try it on button sat on the corner of the change room, and the gap around it narrowed at the bend.</p>
+              <p>The frame and the dashed box now bend around the button from its centre, with an even 12px gap. Every corner inside is concentric: 32px frame, 20px boxes, 8px toast. When a row empties, one dashed line wraps the growing box and the button, so the notch forms as the box grows.</p>
+            </div></details>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Try-On</p>
+            <p class="s-line">Upload your photo first, with examples and tips, or use a model.</p>
+            <details class="s-why"><summary>Why?</summary><div class="s-why-body">
+              <p>The photo step showed a dashed body outline in place of your photo. Of 9 try-on products researched, including Google, ASOS and Zara, none uses one.</p>
+              <p>The step now asks for your photo first, with “like this / not like this” examples and tips, or you can use a model instead. The body labels changed too: Straight and Curvy became Even and Wider hips, because the old ones read as judgements.</p>
+            </div></details>
+          </div>
+        </div>
+        <a class="p-link" href="https://90tsky.github.io/blend/" target="_blank" rel="noopener">Open the live app <span class="arw" aria-hidden="true">↗</span></a>
+      </div>
+      <div class="collage">
+        <!-- data-step = which dot the piece belongs to. --x/--y/--w are % of the collage box (5:4). -->
+        <!-- Rendered from the real app at 390x844 (13 Nov). Loops play only on screen (main.js); the poster frame shows with reduced motion or Low Power Mode. -->
+        <button type="button" class="piece" data-step="0" style="--x:1%;--y:4%;--w:18%;--r:-5deg;--dx:1%;--dy:6%;--dw:16.5%" aria-label="Capsule: Events, where every piece goes with every other"><img src="img/blend/blend-events.webp" alt="" width="720" height="1558" loading="lazy"></button>
+        <button type="button" class="piece" data-step="1" style="--x:3%;--y:54%;--w:15%;--r:4deg;--dx:15.5%;--dy:22%;--dw:13%" aria-label="Where it started: an early My wardrobe screen"><img src="img/blend-wardrobe.jpg" alt="" width="360" height="800" loading="lazy"></button>
+        <button type="button" class="piece" data-step="2" style="--x:21%;--y:2%;--w:21%;--r:2deg;--dx:28%;--dy:2%;--dw:18%" aria-label="Next in line: the newest piece waits small, and the row turns like a ring"><video muted loop playsinline preload="metadata" loading="lazy" poster="img/blend/blend-loop-ring-poster.webp" width="720" height="1558" aria-hidden="true"><source src="img/blend/blend-loop-ring.mp4" type="video/mp4"></video></button>
+        <button type="button" class="piece" data-step="3" style="--x:43%;--y:9%;--w:20%;--r:-3deg;--dx:45%;--dy:8%;--dw:17%" aria-label="The frame: a black bomber in dark mode, on the warm grey frame"><img src="img/blend/blend-frame-dark.webp" alt="" width="720" height="1558" loading="lazy"></button>
+        <button type="button" class="piece" data-step="4" style="--x:65%;--y:2%;--w:19%;--r:4deg;--dx:61.5%;--dy:2%;--dw:15.5%" aria-label="The notch: the dashed outline bends around Try it on as the row empties"><video muted loop playsinline preload="metadata" loading="lazy" poster="img/blend/blend-loop-notch-poster.webp" width="720" height="1558" aria-hidden="true"><source src="img/blend/blend-loop-notch.mp4" type="video/mp4"></video></button>
+        <button type="button" class="piece" data-step="4" data-tidy=".5" style="--x:45%;--y:66%;--w:17%;--r:-2deg;--dx:62%;--dy:72%;--dw:15%" aria-label="The notch, close up: two even bends around the button"><img src="img/blend/blend-detail-notch.webp" alt="" width="400" height="330" loading="lazy"></button>
+        <button type="button" class="piece" data-step="5" style="--x:78%;--y:40%;--w:20%;--r:-4deg;--dx:79.5%;--dy:10%;--dw:18.5%" aria-label="Try-On: upload first, with examples and tips"><img src="img/blend/blend-try-on-photo.webp" alt="" width="720" height="1558" loading="lazy"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TravelPulse: texts drafted 20 Nov by the case-study-writer from TravelPulse Dashboard Design/CASE-STUDY-NOTES.md
+       (the draft is CASE-STUDY-DRAFT.md there; its three [Need] gaps are left out here until Kris gives the reasons). -->
+  <section class="project snap" id="travelpulse" data-group="Applications and UI/UX" data-story aria-labelledby="tp-title">
+    <div class="in">
+      <div class="p-head">
+        <p class="p-eye">Apps &amp; UI · data dashboard</p>
+        <h2 class="p-title" id="tp-title">Travel&shy;Pulse</h2>
+        <p class="p-desc">A dashboard that turns TikTok and Instagram posts into demand forecasts for hotels, travel agencies and airlines: where travellers are going next, and why.</p>
+      </div>
+      <div class="p-body">
+        <div class="dots" role="group" aria-label="Decisions in TravelPulse">
+          <button type="button" class="dot" data-label="Early signal" aria-pressed="true"><span class="pill"><i></i><span class="lbl">Early signal</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Not surveillance" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Not surveillance</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Role lens" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Role lens</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="One number" aria-pressed="false"><span class="pill"><i></i><span class="lbl">One number</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Same everywhere" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Same everywhere</span><span class="bar"></span></span></button>
+        </div>
+        <div class="steps">
+          <div class="step is-on">
+            <p class="s-k">Early signal</p>
+            <p class="s-line">TikTok and Instagram travel posts, read as a sign of demand.</p>
+            <details class="s-why"><summary>Why?</summary><div class="s-why-body">
+              <p>A marketing director at a boutique hotel chain sees a destination blow up on TikTok too late to change prices or packages. They still rely on 6-month-old surveys.</p>
+              <p>So TravelPulse reads travel posts on TikTok and Instagram as an early demand signal. A world map shows where the conversation is and how it feels. A destination page shows the what (hashtags) and the why (sentiment), and one click turns it into a marketing brief.</p>
+            </div></details>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Not surveillance</p>
+            <p class="s-line">Anonymous trends only: real travellers never appear by name.</p>
+            <details class="s-why"><summary>Why?</summary><div class="s-why-body">
+              <p>The signal sits in public posts, but scraping EU citizens’ personal data breaks GDPR even when it’s public. Influencer posts can also be paid or staged.</p>
+              <p>Only anonymous, aggregated trends are kept, so TravelPulse is market research, not surveillance: a post shows as “Real traveler · IN”, never a name. A filter on every page separates real travellers from influencers, and each destination shows how far the two disagree.</p>
+            </div></details>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Role lens</p>
+            <p class="s-line">Pick hotel or travel agency: tiles reorder, shared numbers stay the same.</p>
+            <details class="s-why"><summary>Why?</summary><div class="s-why-body">
+              <p>Agencies, hotels, tourism boards and airlines each watch a different stage of the traveller’s funnel. The first prototype gave each business type its own KPIs through a picker, then dropped it for one dashboard for everyone.</p>
+              <p>That dashboard now has a role lens on top. Pick hotel or travel agency and the KPI tiles and modules reorder or join in. No shared number changes, so every role sees the same figures.</p>
+            </div></details>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">One number</p>
+            <p class="s-line">Every screen reads from one live database, so the numbers match.</p>
+            <details class="s-why"><summary>Why?</summary><div class="s-why-body">
+              <p>In the prototype, Kyoto showed −22% velocity on the map but +400% on its own page, because each screen kept its own copy of the data. Fixing it took several rounds.</p>
+              <p>Now every number is worked out in one place, and every screen reads it from there. Since TravelPulse went live on Cloudflare on 27 Oct 2026, that one place is a database of sample data. An automated screenshot check compares each destination’s velocity across screens and fails if any differ.</p>
+            </div></details>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Same everywhere</p>
+            <p class="s-line">Badges, tooltips and hover effects each follow a single rule.</p>
+            <details class="s-why"><summary>Why?</summary><div class="s-why-body">
+              <p>As the prototype grew, its badges, tooltips and hover effects drifted apart across the dashboard.</p>
+              <p>Each pattern now has one rule: one badge style, one dark tooltip for charts and the interface, and one hover rule. In light mode, things lift with a shadow. In dark mode, the fill brightens, with no shadow and no movement.</p>
+            </div></details>
+          </div>
+        </div>
+        <a class="p-link" href="https://travelpulse.travelpulse.workers.dev" target="_blank" rel="noopener">Open the live dashboard <span class="arw" aria-hidden="true">↗</span></a>
+      </div>
+      <div class="collage">
+        <!-- Screenshots of the live dashboard (travelpulse.travelpulse.workers.dev), 20 Nov 2026, 1440x900 at 2x, data from its
+             Cloudflare D1 database. Originals and spares: Projects/portfolio-site-work/travelpulse/live-2026-11-20/.
+             The second Early signal piece is a demo made with the stageshow skill (20 Nov; Kris chose TravelPulse and a looping
+             video): Sapa's real sample figures in TravelPulse's own look, the pointer running along the chart to the 14 Oct spike.
+             Its source, recording tools and REHEARSAL.md are in Projects/portfolio-site-work/travelpulse-demo/. The poster frame is
+             the payoff, so reduced motion still shows the story. -->
+        <button type="button" class="piece" data-step="0" style="--x:24%;--y:28%;--w:50%;--r:1.5deg;--dx:33%;--dy:30%;--dw:32%" aria-label="Early signal: Sapa’s mentions over 30 days, followed day by day to a spike of 2,359 posts and videos on 14 Oct"><video muted loop playsinline preload="metadata" loading="lazy" poster="img/travelpulse/tp-demo-poster.webp" width="1440" height="900" aria-hidden="true"><source src="img/travelpulse/tp-demo.mp4" type="video/mp4"></video></button>
+        <button type="button" class="piece" data-step="0" style="--x:1%;--y:2%;--w:48%;--r:-2deg;--dx:1%;--dy:3%;--dw:34%" aria-label="Early signal: the Global Vibe Check, where the conversation is and how it feels"><img src="img/travelpulse/tp-vibe-check.webp" alt="" width="1600" height="1000" loading="lazy"></button>
+        <button type="button" class="piece" data-step="1" style="--x:2%;--y:44%;--w:12%;--r:3deg;--dx:2%;--dy:52%;--dw:10%" aria-label="Not surveillance: a post signed only “Real traveler · IN”"><img src="img/travelpulse/tp-post-real-traveler.webp" alt="" width="400" height="710" loading="lazy"></button>
+        <button type="button" class="piece" data-step="1" style="--x:15%;--y:45%;--w:33%;--r:-1deg;--dx:13.5%;--dy:55%;--dw:22%" aria-label="Not surveillance: real travellers and influencers compared on Kyoto"><img src="img/travelpulse/tp-real-vs-influencers.webp" alt="" width="1100" height="609" loading="lazy"></button>
+        <button type="button" class="piece" data-step="2" style="--x:51%;--y:3%;--w:47%;--r:2deg;--dx:37%;--dy:3%;--dw:30%" aria-label="Role lens: the Overview through a hotel’s lens"><img src="img/travelpulse/tp-lens-hotel.webp" alt="" width="1600" height="1000" loading="lazy"></button>
+        <button type="button" class="piece" data-step="2" style="--x:52%;--y:43%;--w:40%;--r:-2deg;--dx:41%;--dy:46%;--dw:27%" aria-label="Role lens: the same Overview through a travel agency’s lens, with the same scores"><img src="img/travelpulse/tp-lens-agency.webp" alt="" width="1600" height="1000" loading="lazy"></button>
+        <button type="button" class="piece" data-step="3" data-tidy=".5" style="--x:2%;--y:78%;--w:30%;--r:1deg;--dx:70%;--dy:86%;--dw:22%" aria-label="One number: Kyoto at +41% on the Global Vibe Check"><img src="img/travelpulse/tp-kyoto-vibe-check.webp" alt="" width="728" height="160" loading="lazy"></button>
+        <button type="button" class="piece" data-step="3" style="--x:33%;--y:76%;--w:32%;--r:-1deg;--dx:70%;--dy:52%;--dw:27%" aria-label="One number: and +41% on Kyoto’s own page"><img src="img/travelpulse/tp-kyoto-page.webp" alt="" width="1100" height="560" loading="lazy"></button>
+        <button type="button" class="piece" data-step="4" style="--x:66%;--y:77%;--w:16%;--r:2deg;--dx:69%;--dy:4%;--dw:15%" aria-label="Same everywhere: in light mode a row lifts with a shadow"><img src="img/travelpulse/tp-hover-light.webp" alt="" width="1100" height="1053" loading="lazy"></button>
+        <button type="button" class="piece" data-step="4" style="--x:83%;--y:79%;--w:16%;--r:-3deg;--dx:83.5%;--dy:10%;--dw:15.5%" aria-label="Same everywhere: in dark mode the row brightens instead, under the one dark tooltip"><img src="img/travelpulse/tp-hover-dark-tooltip.webp" alt="" width="1100" height="1053" loading="lazy"></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="project snap" id="stamp" data-group="Applications and UI/UX" data-story aria-labelledby="stamp-title">
+    <div class="in">
+      <div class="p-head">
+        <p class="p-eye">Apps &amp; UI · Figma plugin</p>
+        <h2 class="p-title" id="stamp-title">Interaction Stamp</h2>
+        <p class="p-desc">A Figma plugin for prototypes with variables: build an interaction once, then stamp it onto other layers. Card 1's “added 1” becomes “added 2” and “added 3” on the next cards.</p>
+      </div>
+      <div class="p-body">
+        <!-- Draft texts (13 Nov) from the plugin's README and code (version 1.x). Open questions for Kris are in DESIGN.md. -->
+        <div class="dots" role="group" aria-label="Decisions in Interaction Stamp">
+          <button type="button" class="dot" data-label="Build once" aria-pressed="true"><span class="pill"><i></i><span class="lbl">Build once</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="The dots" aria-pressed="false"><span class="pill"><i></i><span class="lbl">The dots</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Looks like Figma" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Looks like Figma</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Preview first" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Preview first</span><span class="bar"></span></span></button>
+        </div>
+        <div class="steps">
+          <div class="step is-on">
+            <p class="s-k">Build once</p>
+            <p class="s-line">Stamp one card’s interaction on the others, and the numbers count up.</p>
+            <details class="s-why"><summary>Why?</summary><div class="s-why-body">
+              <p>A shop prototype has a card per product, and every card needs the same “add to cart” interaction, but each with its own variable: “added 1”, “added 2”, “added 3”. In Figma, that means building it again on each card and re-picking every variable in every action.</p>
+              <p>Now you build the interaction once. Save it from one card, select the others and stamp it on. The numbers count up in reading order, left to right and then down, so Card 2 gets “added 2” and Card 3 gets “added 3”.</p>
+            </div></details>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">The dots</p>
+            <p class="s-line">Lit means “color_3” counts up when stamped, off means “slot_1” stays.</p>
+            <details class="s-why"><summary>Why?</summary><div class="s-why-body">
+              <p>Not every name should change: in a colour picker, “color_3” has to become “color_4” on the next swatch, but “slot_1” and “empty” must stay. To get that right, an early version asked for a find-and-replace rule and a setting for every variable.</p>
+              <p>Instead, every variable, layer and value gets one dot. Lit means it’s the same in every row and counts up when stamped; off means it belongs to its row and stays. Dots start lit when a name is used in more than one row, so most of the time they’re already right.</p>
+            </div></details>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Looks like Figma</p>
+            <p class="s-line">Trigger, a row per action, “if” and “else”, edited in place.</p>
+            <details class="s-why"><summary>Why?</summary><div class="s-why-body">
+              <p>A plugin that writes interactions its own way makes you learn a second notation for something you already know.</p>
+              <p>Here the interaction is laid out like Figma’s own interaction panel: the trigger, a row per action, “if” and “else” branches. You edit it in place: click a variable to pick another from a searchable list, and add or remove lines with + and −, as in Figma.</p>
+            </div></details>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Preview first</p>
+            <p class="s-line">What each layer will get, listed before anything changes.</p>
+            <details class="s-why"><summary>Why?</summary><div class="s-why-body">
+              <p>One click changes many layers and can create new variables, so a wrong guess would be hard to spot afterwards.</p>
+              <p>That’s why the preview comes first. Before anything changes, it lists what each layer gets: ✓ it exists, + it will be created, ! it can’t be found (and Apply waits). Variables bound inside the layer follow too, and one Undo takes the whole stamp back.</p>
+            </div></details>
+          </div>
+        </div>
+      </div>
+      <div class="collage">
+        <!-- Rendered from the plugin's own ui.html with mock data (13 Nov); the canvas, cards and title bar around it are drawn to look like Figma. -->
+        <button type="button" class="piece" data-step="0" style="--x:2%;--y:8%;--w:50%;--r:-2deg;--dx:1%;--dy:3%;--dw:32%" aria-label="Build once: three cards selected, the interaction stamped onto them"><video muted loop playsinline preload="metadata" loading="lazy" poster="img/stamp/stamp-loop-poster.webp" width="820" height="800" aria-hidden="true"><source src="img/stamp/stamp-loop.mp4" type="video/mp4"></video></button>
+        <button type="button" class="piece" data-step="2" style="--x:55%;--y:2%;--w:19%;--r:3deg;--dx:35%;--dy:2%;--dw:15.5%" aria-label="Looks like Figma: the interaction laid out like Figma’s interaction panel"><img src="img/stamp/stamp-review.webp" alt="" width="480" height="852" loading="lazy"></button>
+        <button type="button" class="piece" data-step="2" style="--x:77%;--y:8%;--w:21%;--r:5deg;--dx:77%;--dy:5%;--dw:20%" aria-label="Looks like Figma: click a variable to pick another"><img src="img/stamp/stamp-picker.webp" alt="" width="480" height="448" loading="lazy"></button>
+        <button type="button" class="piece" data-step="1" style="--x:56%;--y:49%;--w:37%;--r:-2deg;--dx:52%;--dy:40%;--dw:33%" aria-label="The dots: slot_1 stays, color_3 is the same in every row"><img src="img/stamp/stamp-dots.webp" alt="" width="600" height="416" loading="lazy"></button>
+        <button type="button" class="piece" data-step="3" style="--x:6%;--y:75%;--w:40%;--r:2deg;--dx:4%;--dy:68%;--dw:34%" aria-label="Preview first: what each card will get"><img src="img/stamp/stamp-preview.webp" alt="" width="600" height="246" loading="lazy"></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="project snap" id="silverbliss" data-group="Graphic design and illustrations" data-story aria-labelledby="sb-title">
+    <div class="in">
+      <div class="p-head">
+        <p class="p-eye">Graphic design · branding</p>
+        <h2 class="p-title" id="sb-title">Silver Bliss</h2>
+        <p class="p-desc">A metallic logo, made into live chrome. Move the mouse over it and the light slides across the silver.</p>
+      </div>
+      <div class="p-body">
+        <!-- Draft texts (13 Nov): the process as decisions. A dot about the mark itself is Kris's to add. -->
+        <div class="dots" role="group" aria-label="Decisions in Silver Bliss">
+          <button type="button" class="dot" data-label="Live chrome" aria-pressed="true"><span class="pill"><i></i><span class="lbl">Live chrome</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Your reflection" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Your reflection</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Clean metal" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Clean metal</span><span class="bar"></span></span></button>
+        </div>
+        <div class="steps">
+          <div class="step is-on">
+            <p class="s-k">Live chrome</p>
+            <p class="s-line">The shine moves across the 2D logo, bevelled by a normal map.</p>
+            <details class="s-why"><summary>Why?</summary><div class="s-why-body">
+              <p>A metallic logo shown as a flat picture is only a photo of metal: the shine never moves.</p>
+              <p>The logo is real chrome on the page, an idea from a reel by <a href="https://www.instagram.com/archieauburn/" target="_blank" rel="noopener">@archieauburn</a> where 3D letters reflect the webcam. This version is built differently: the logo stays 2D and a normal map gives it its bevel. That works straight from the logo picture, so the lettering stays exactly as designed, and it’s far lighter than a 3D scene, so it runs smoothly on any phone.</p>
+            </div></details>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Your reflection</p>
+            <p class="s-line">You start the camera, and its picture never leaves your device.</p>
+            <details class="s-why"><summary>Why?</summary><div class="s-why-body">
+              <p>Seeing yourself in the silver is the magic part, but nobody should be filmed without asking.</p>
+              <p>The camera only starts when you press the button, and it switches off when you scroll away. Its picture never leaves your device. The colours of your room come through, so the silver picks up your surroundings.</p>
+            </div></details>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Clean metal</p>
+            <p class="s-line">The bevel rebuilt from a traced outline, then retouched by hand.</p>
+            <details class="s-why"><summary>Why?</summary><div class="s-why-body">
+              <p>The first version crinkled. The logo had been upscaled, its edges wobbled, and chrome shows every wobble.</p>
+              <p>The outline was traced into clean curves and straight lines, and the bevel was rebuilt from it. Then the bevel was retouched by hand where the strokes meet.</p>
+            </div></details>
+          </div>
+        </div>
+        <!-- chrome-logo.js. The camera only starts on this button and stops when the section leaves the screen. -->
+        <button type="button" class="chip sb-cam" aria-pressed="false"><span>See yourself in the silver</span></button>
+        <p class="sb-cam-note" aria-live="polite"></p>
+        <p class="p-note">Colour samples come next.</p>
+      </div>
+      <div class="collage"><div class="piece solo sb-chrome" style="--x:5%;--y:2.3%;--w:90%;--r:0deg;--dx:22.5%;--dy:2%;--dw:55%"><img src="img/silverbliss-logo.webp" alt="Silver Bliss logo in silver chrome" width="1164" height="987" loading="lazy"><canvas aria-hidden="true"></canvas></div></div>
+    </div>
+  </section>
+
+  <section class="project snap" id="posters" data-story data-group="Graphic design and illustrations" aria-labelledby="posters-title">
+    <div class="in">
+      <div class="p-head"><p class="p-eye">Graphic design · posters</p><h2 class="p-title" id="posters-title">Posters</h2><p class="p-desc">Posters for causes, anniversaries, films and books. Click one to see it large.</p></div>
+      <div class="p-body">
+        <!-- Draft texts (18 Nov), one per poster: what each shows, read from the posters. The briefs and reasons are Kris's to add. -->
+        <div class="dots" role="group" aria-label="Posters">
+          <button type="button" class="dot" data-label="2+1=1" aria-pressed="true"><span class="pill"><i></i><span class="lbl">2+1=1</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Бай Ганьо" aria-pressed="false"><span class="pill"><i></i><span class="lbl"><span lang="bg">Бай Ганьо</span></span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Power" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Power</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Close the call" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Close the call</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="I Think" aria-pressed="false"><span class="pill"><i></i><span class="lbl">I Think</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Enlust To-day" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Enlust To-day</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Persistence of Memory" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Persistence of Memory</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="House of Leaves" aria-pressed="false"><span class="pill"><i></i><span class="lbl">House of Leaves</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Clean Asia" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Clean Asia</span><span class="bar"></span></span></button>
+        </div>
+        <div class="steps">
+          <div class="step is-on">
+            <p class="s-k">2+1=1</p>
+            <p class="s-line">A proverb as a sum: you become like the company you keep.</p>
+            <details class="s-why"><summary>More</summary><div class="s-why-body">
+              <p><span lang="bg">“С каквото се събереш… такъв ставаш”</span>: you become like the company you keep. The proverb written as a sum on a school board, where two and one make one.</p>
+            </div></details>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k"><span lang="bg">Бай Ганьо</span></p>
+            <p class="s-line">Peasant shoes in a luxury monogram: he never left, just dresses better.</p>
+            <details class="s-why"><summary>More</summary><div class="s-why-body">
+              <p>132 years of <span lang="bg">Бай Ганьо</span>, Aleko Konstantinov’s tactless traveller. His <span lang="bg">цървули</span>, the old rawhide peasant shoes, are covered in a luxury monogram and signed by the author: the character never left, he just dresses better now.</p>
+            </div></details>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Power</p>
+            <p class="s-line">One clenched fist fills the frame in red, a single word below.</p>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Close the call</p>
+            <p class="s-line">A red handset keeps the chain closed: ending the call opens it.</p>
+            <details class="s-why"><summary>More</summary><div class="s-why-body">
+              <p>A red phone handset as one link of a steel chain: the phone is what keeps the chain closed, so ending the call is how it opens.</p>
+            </div></details>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">I Think</p>
+            <p class="s-line">IGOR cut into leopard-print hair: an imagined film about believing in love.</p>
+            <details class="s-why"><summary>More</summary><div class="s-why-body">
+              <p>An imagined film poster: “I Think” as the story of a young man who questions whether to stay vulnerable in love, grows through it and comes to believe in love. IGOR is cut into his leopard-print hair.</p>
+            </div></details>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Enlust To-day</p>
+            <p class="s-line">The First World War’s “Enlist” becomes “Enlust”: soldiers kiss under their helmets.</p>
+            <details class="s-why"><summary>More</summary><div class="s-why-body">
+              <p>The First World War’s “Enlist to-day” turned into “Enlust”: two soldiers kiss under their helmets, 100 years after the war ended. “They are happy &amp; satisfied. Are you?”</p>
+            </div></details>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Persistence of Memory</p>
+            <p class="s-line">An imagined mystery film: art students cross into imagination, then remember nothing.</p>
+            <details class="s-why"><summary>More</summary><div class="s-why-body">
+              <p>An imagined philosophical mystery film, named after Dalí’s painting: art students learn from their teacher to cross into the world of imagination, but when they come back, nobody remembers what happened there. A brain floats in an open sky.</p>
+            </div></details>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">House of Leaves</p>
+            <p class="s-line">A leaf drawn as the maze inside the novel’s haunted house.</p>
+            <details class="s-why"><summary>More</summary><div class="s-why-body">
+              <p>For Mark Z. Danielewski’s novel, a haunted house with a labyrinth at its heart and a Minotaur at the heart of the labyrinth: a leaf drawn as a maze.</p>
+            </div></details>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Clean Asia</p>
+            <p class="s-line">Humanity’s eyes leave their bodies and attack, in an imagined horror film.</p>
+            <details class="s-why"><summary>More</summary><div class="s-why-body">
+              <p>An imagined horror film: humanity’s eyes turn out to be intelligent, leave their bodies, fly to the moon and attack, and two blinded pilot brothers with a sixth sense are sent to stop them. One red iris stares out under a neon title.</p>
+            </div></details>
+          </div>
+        </div>
+      </div>
+      <div class="collage">
+        <!-- Nine posters from Images/Design/posters/portfolio (Kris, 18 Nov), replacing Кръгът; the drawn Enlust To-day was taken out the same day. They pop under the mouse like
+             blend's pieces; a click or tap opens the big view (main.js, .viewer), which loads the sharper copy in big/. -->
+        <button type="button" class="piece poster-btn" data-step="0" style="--x:2%;--y:1%;--w:19%;--r:-2deg;--dx:0.5%;--dy:2%;--dw:15.5%" aria-label="View larger: 2+1=1"><img src="img/posters/stills/two-plus-one.webp" data-big="img/posters/stills/big/two-plus-one.webp" alt="Poster: 2+1=1, chalked on a green school board. С каквото се събереш… такъв ставаш" width="630" height="900" loading="lazy"></button>
+        <button type="button" class="piece poster-btn" data-step="1" style="--x:22%;--y:3%;--w:30%;--r:2deg;--dx:15%;--dy:5%;--dw:27%" aria-label="View larger: 132 години Бай Ганьо"><img src="img/posters/stills/bai-ganyo.webp" data-big="img/posters/stills/big/bai-ganyo.webp" alt="Poster: 132 години Бай Ганьо: a pair of brown monogrammed leather shoes on green, with Aleko Konstantinov’s signature" width="900" height="630" loading="lazy"></button>
+        <button type="button" class="piece poster-btn" data-step="2" style="--x:53%;--y:1%;--w:19%;--r:-1.5deg;--dx:41%;--dy:2%;--dw:16%" aria-label="View larger: Power"><img src="img/posters/stills/power.webp" data-big="img/posters/stills/big/power.webp" alt="Poster: Power: a clenched red fist" width="676" height="900" loading="lazy"></button>
+        <button type="button" class="piece poster-btn" data-step="3" style="--x:13.5%;--y:37%;--w:31%;--r:2.5deg;--dx:56%;--dy:5%;--dw:27%" aria-label="View larger: Close the call! Break open!"><img src="img/posters/stills/close-the-call.webp" data-big="img/posters/stills/big/close-the-call.webp" alt="Poster: Close the call! Break open! A red phone handset joins two chain links" width="900" height="642" loading="lazy"></button>
+        <button type="button" class="piece poster-btn" data-step="4" style="--x:73%;--y:1%;--w:19%;--r:-2deg;--dx:82.5%;--dy:2%;--dw:16%" aria-label="View larger: I Think"><img src="img/posters/stills/i-think.webp" data-big="img/posters/stills/big/i-think.webp" alt="Poster: I Think: the back of a head with IGOR cut into leopard-print hair, above a pink jacket" width="646" height="900" loading="lazy"></button>
+        <button type="button" class="piece poster-btn" data-step="5" style="--x:22%;--y:70%;--w:30%;--r:1.5deg;--dx:9%;--dy:53%;--dw:27%" aria-label="View larger: Enlust To-day, photographic"><img src="img/posters/stills/enlust-photo.webp" data-big="img/posters/stills/big/enlust-photo.webp" alt="Poster: Enlust To-day, photographic version: two soldiers in helmets kiss against a red sky" width="900" height="642" loading="lazy"></button>
+        <button type="button" class="piece poster-btn" data-step="6" style="--x:47.5%;--y:35%;--w:18%;--r:-1.5deg;--dx:39%;--dy:50%;--dw:15%" aria-label="View larger: Persistence of Memory"><img src="img/posters/stills/persistence-of-memory.webp" data-big="img/posters/stills/big/persistence-of-memory.webp" alt="Poster: Persistence of Memory: a brain floating in a blue sky" width="612" height="900" loading="lazy"></button>
+        <button type="button" class="piece poster-btn" data-step="7" style="--x:68.5%;--y:36%;--w:18%;--r:2deg;--dx:57%;--dy:51%;--dw:15.5%" aria-label="View larger: House of Leaves"><img src="img/posters/stills/house-of-leaves.webp" data-big="img/posters/stills/big/house-of-leaves.webp" alt="Poster: House of Leaves: a leaf drawn as a maze, on black" width="642" height="900" loading="lazy"></button>
+        <button type="button" class="piece poster-btn" data-step="8" style="--x:55%;--y:68%;--w:17%;--r:-2.5deg;--dx:75.5%;--dy:50%;--dw:15.5%" aria-label="View larger: Clean Asia!"><img src="img/posters/stills/clean-asia.webp" data-big="img/posters/stills/big/clean-asia.webp" alt="Poster: Clean Asia! A red eye inside a blue sphere under a glowing red title, on black" width="644" height="900" loading="lazy"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Animated posters: their own project since Kris's sketch (13 Nov). Description is a draft. -->
+  <section class="project snap" id="animated" data-story data-group="Graphic design and illustrations" aria-labelledby="anim-title">
+    <div class="in">
+      <div class="p-head"><p class="p-eye">Graphic design · motion</p><h2 class="p-title" id="anim-title">Animated posters</h2><p class="p-desc">Two posters made to move: animated in Figma, rebuilt to play right on the page. Click one to see it large.</p></div>
+      <div class="p-body">
+        <!-- Draft texts (18 Nov), one per poster: what each shows, read from the posters. The briefs and reasons are Kris's to add. -->
+        <div class="dots" role="group" aria-label="Animated posters">
+          <button type="button" class="dot" data-label="The wolf" aria-pressed="true"><span class="pill"><i></i><span class="lbl">The wolf</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Lebanon" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Lebanon</span><span class="bar"></span></span></button>
+        </div>
+        <div class="steps">
+          <div class="step is-on">
+            <p class="s-k">The wolf</p>
+            <p class="s-line">Turning black and shrinking, he walks into the dark instead of sinking.</p>
+            <details class="s-why"><summary>More</summary><div class="s-why-body">
+              <p><span lang="bg">“Вълкът и 7-те козлета”</span> (The Wolf and the Seven Young Goats). The title drops in front of the wolf, the fish swim apart, and the wolf turns black and shrinks towards his feet, so he walks off into the dark instead of sinking. Built from the poster’s own layers moved on the page, so the type stays sharp and it plays on phones.</p>
+            </div></details>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Lebanon</p>
+            <p class="s-line">The bowl spins out, and the title drops into the empty sky.</p>
+            <details class="s-why"><summary>More</summary><div class="s-why-body">
+              <p>The bowl with its toy tank spins out of the frame on a spring, the title drops into the empty sky and the credits fall away, then it all swings back. The timing is the Figma prototype’s own spring.</p>
+            </div></details>
+          </div>
+        </div>
+      </div>
+      <div class="collage">
+        <!-- Posters pop under the mouse like blend's pieces; a click or tap opens the big view (main.js, .viewer).
+             Animated posters (DESIGN.md, Animated posters): layers exported from the Figma prototype's first frame.
+             --lx/--ly/--lw/--lh place a layer in % of the poster, --to is where it ends, --org is the point it turns or scales round.
+             data-big = a sharper copy that only the big view loads. -->
+        <button type="button" class="piece poster-btn" data-step="0" style="--x:4%;--y:6%;--w:44%;--r:-4deg;--dx:15%;--dy:4%;--dw:32%" aria-label="View larger: Вълкът и 7-те козлета, animated poster">
+          <span class="poster-anim pa-wolf" role="img" aria-label="Animated poster: Вълкът и 7-те козлета (The wolf and the seven young goats). The fish swim off, the wolf walks into the dark, and the title settles in the middle of the black.">
+            <img class="pa pa-title" src="img/posters/wolf/title.webp" alt="" width="1383" height="502" loading="lazy" style="--lx:1.74%;--ly:3.66%;--lw:94.56%;--to:translate(0%,-134.35%)">
+            <img class="pa" src="img/posters/wolf/fish-07.webp" data-big="img/posters/wolf/big/fish-07.webp" alt="" width="130" height="69" loading="lazy" style="--lx:9.81%;--ly:53.41%;--lw:16.27%;--to:translate(216.18%,0%)">
+            <img class="pa" src="img/posters/wolf/fish-06.webp" data-big="img/posters/wolf/big/fish-06.webp" alt="" width="174" height="96" loading="lazy" style="--lx:71.93%;--ly:47.08%;--lw:21.74%;--to:translate(-157.86%,0%)">
+            <span class="pa" style="--lx:14.39%;--ly:16.65%;--lw:77.47%;--lh:83.49%;--org:50% 85%;--to:scale(.87)">
+              <img class="pa-fill" src="img/posters/wolf/wolf.webp" data-big="img/posters/wolf/big/wolf.webp" alt="" width="620" height="934" loading="lazy">
+              <span class="pa pa-cover pa-fade pa-dark" style="--to:none;--o0:0;--o1:1"></span>
+            </span>
+            <img class="pa" src="img/posters/wolf/fish-05.webp" data-big="img/posters/wolf/big/fish-05.webp" alt="" width="163" height="88" loading="lazy" style="--lx:-9.4%;--ly:49.5%;--lw:20.34%;--to:translate(-234.96%,-42.19%)">
+            <img class="pa" src="img/posters/wolf/fish-04.webp" data-big="img/posters/wolf/big/fish-04.webp" alt="" width="218" height="104" loading="lazy" style="--lx:3.11%;--ly:60.88%;--lw:27.28%;--to:translate(-175.19%,-35.46%)">
+            <img class="pa" src="img/posters/wolf/fish-03.webp" data-big="img/posters/wolf/big/fish-03.webp" alt="" width="255" height="222" loading="lazy" style="--lx:81.09%;--ly:52.5%;--lw:31.9%;--to:translate(137.41%,6.28%)">
+            <img class="pa" src="img/posters/wolf/fish-02.webp" data-big="img/posters/wolf/big/fish-02.webp" alt="" width="345" height="233" loading="lazy" style="--lx:0%;--ly:75.04%;--lw:43.04%;--to:translate(-111.04%,-15.88%)">
+            <img class="pa" src="img/posters/wolf/fish-01.webp" data-big="img/posters/wolf/big/fish-01.webp" alt="" width="296" height="278" loading="lazy" style="--lx:60.92%;--ly:70.09%;--lw:36.99%;--to:translate(118.48%,5.02%)">
+          </span>
+        </button>
+        <button type="button" class="piece poster-btn" data-step="1" style="--x:52%;--y:14%;--w:44%;--r:3deg;--dx:53%;--dy:6%;--dw:32%" aria-label="View larger: Lebanon, animated poster">
+          <span class="poster-anim pa-leb" role="img" aria-label="Animated poster: Lebanon. The bowl with the toy tank spins out of the frame and the title drops into the sky.">
+            <span class="pa pa-sky" style="--lh:100%;--to:scale(.923)">
+              <img class="pa-fill" src="img/posters/lebanon/sky.webp" data-big="img/posters/lebanon/big/sky.webp" alt="" width="800" height="1120" loading="lazy">
+              <img class="pa pa-cover pa-fade" src="img/posters/lebanon/sky-clear.webp" data-big="img/posters/lebanon/big/sky-clear.webp" alt="" width="800" height="1120" loading="lazy" style="--to:none;--o0:0;--o1:1">
+            </span>
+            <img class="pa" src="img/posters/lebanon/title.webp" alt="" width="1519" height="440" loading="lazy" style="--lx:1.75%;--ly:.57%;--lw:96.53%;--to:translate(0%,201.48%) scale(.6383)">
+            <span class="pa" style="--lh:100%;--org:45.12% 53.45%;--to:translate(-104.6%,4.69%) rotate(52deg) scale(.8573)">
+              <img class="pa-part" src="img/posters/lebanon/shadow.webp" alt="" width="256" height="261" loading="lazy" style="--px:-20.34%;--py:16.44%;--pw:127.78%">
+              <img class="pa-part" src="img/posters/lebanon/bowl.webp" data-big="img/posters/lebanon/big/bowl.webp" alt="" width="1042" height="1020" loading="lazy" style="--px:-35.25%;--py:-1.11%;--pw:130.2%">
+            </span>
+            <img class="pa" src="img/posters/lebanon/credits.webp" alt="" width="1573" height="246" loading="lazy" style="--ly:86.35%;--org:0 0;--to:translate(2%,133.82%) scale(.96)">
+          </span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="project snap" id="logos" data-group="Graphic design and illustrations" data-story aria-labelledby="logos-title">
+    <div class="in">
+      <div class="p-head">
+        <p class="p-eye">Graphic design · logos</p>
+        <h2 class="p-title" id="logos-title">Logos</h2>
+        <p class="p-desc">Marks with an idea inside: a goat in a K, a radiator that spells “warm”, a swan that’s also a hand.</p>
+      </div>
+      <div class="p-body">
+        <!-- Draft texts (13 Nov): they describe what each logo shows. The briefs and reasons are Kris's to add (questions in DESIGN.md). -->
+        <div class="dots" role="group" aria-label="Logos">
+          <button type="button" class="dot" data-label="Koza" aria-pressed="true"><span class="pill"><i></i><span class="lbl">Koza</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Truth" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Truth</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Social enterprise" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Social enterprise</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Coat of arms" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Coat of arms</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Svetal Design Lab" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Svetal Design Lab</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Топло" aria-pressed="false"><span class="pill"><i></i><span class="lbl"><span lang="bg">Топло</span></span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Hand-swan" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Hand-swan</span><span class="bar"></span></span></button>
+          <!-- <button type="button" class="dot" data-label="Jumping figure" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Jumping figure</span><span class="bar"></span></span></button> -->
+          <button type="button" class="dot" data-label="Painted palm" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Painted palm</span><span class="bar"></span></span></button>
+        </div>
+        <div class="steps">
+          <div class="step is-on">
+            <p class="s-k">Koza</p>
+            <p class="s-line">The K grows a goat’s horn and head: <span lang="bg">Коза</span> means goat.</p>
+            <details class="s-why"><summary>More</summary><div class="s-why-body">
+              <p><span lang="bg">Коза</span> is Bulgarian for goat, so the K grows one: the arm of the letter is a curved horn, and a goat’s head comes out of the stem.</p>
+            </div></details>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Truth</p>
+            <p class="s-line">One striped ribbon loops through every letter, to read like a palindrome.</p>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Social enterprise</p>
+            <p class="s-line">An impossible triangle of 3 folded bands, marking products of social enterprises.</p>
+            <details class="s-why"><summary>More</summary><div class="s-why-body">
+              <p>A mark for “<span lang="bg">ПРОДУКТ НА СОЦИАЛНО ПРЕДПРИЯТИЕ</span>”, products of social enterprises: three folded bands make an impossible triangle.</p>
+            </div></details>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Coat of arms</p>
+            <p class="s-line">Only the arch and interlace stay, so the frame becomes a monogram.</p>
+            <details class="s-why"><summary>Why?</summary><div class="s-why-body">
+              <p>A coat of arms carries too much detail to work as a small logo.</p>
+              <p>So only its arch and interlace stay, and the rest is dropped. That turns the frame into a monogram.</p>
+            </div></details>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Svetal Design Lab</p>
+            <p class="s-line">A calligraphic S crossed by a stem ending in a flower.</p>
+            <details class="s-why"><summary>More</summary><div class="s-why-body">
+              <p>A calligraphic S with a looped tail, crossed by a stem that ends in a flower, over the name in classic capitals.</p>
+            </div></details>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k"><span lang="bg">Топло</span></p>
+            <p class="s-line">Radiator sections and the gaps between them spell <span lang="bg">ТОПЛО</span>, which means warm.</p>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Hand-swan</p>
+            <p class="s-line">The swan’s wing is an open hand.</p>
+          </div>
+          <!-- <div class="step" aria-hidden="true">
+            <p class="s-k">Jumping figure</p>
+            <p>A figure mid-jump: a round head, arms spread wide, and a body that curves into a smile.</p>
+          </div> -->
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Painted palm</p>
+            <p class="s-line">A rounded frame and 3 pairs of leaves, painted by hand.</p>
+          </div>
+        </div>
+      </div>
+      <div class="collage">
+        <!-- Cut-outs with no card (backgrounds removed 13 Nov). <picture> swaps in a version for the other colour mode where a logo would vanish. -->
+        <button type="button" class="piece cutout" data-step="0" style="--x:2%;--y:4%;--w:18%;--r:-4deg;--dx:2%;--dy:4%;--dw:15%" aria-label="Koza: a goat in a K"><picture><source srcset="img/logos/koza-dark.webp" media="(prefers-color-scheme: dark)"><img src="img/logos/koza.webp" alt="" width="680" height="900" loading="lazy"></picture></button>
+        <button type="button" class="piece cutout" data-step="1" style="--x:26%;--y:3%;--w:11%;--r:3deg;--dx:22%;--dy:3%;--dw:9.5%" aria-label="Truth: one striped ribbon"><picture><source srcset="img/logos/truth-dark.webp" media="(prefers-color-scheme: dark)"><img src="img/logos/truth.webp" alt="" width="421" height="900" loading="lazy"></picture></button>
+        <button type="button" class="piece cutout" data-step="2" style="--x:42%;--y:5%;--w:18%;--r:-2deg;--dx:37%;--dy:5%;--dw:16%" aria-label="Product of a social enterprise"><picture><source srcset="img/logos/psp-white.webp" media="(prefers-color-scheme: dark)"><img src="img/logos/psp.webp" alt="" width="777" height="900" loading="lazy"></picture></button>
+        <button type="button" class="piece cutout" data-step="3" style="--x:64%;--y:3%;--w:14%;--r:2deg;--dx:59%;--dy:3%;--dw:10.5%" aria-label="From coat of arms to logo"><picture><source srcset="img/logos/gerb-to-logo-dark.webp" media="(prefers-color-scheme: dark)"><img src="img/logos/gerb-to-logo.webp" alt="" width="482" height="900" loading="lazy"></picture></button>
+        <button type="button" class="piece cutout" data-step="4" style="--x:81%;--y:6%;--w:16%;--r:-3deg;--dx:77%;--dy:6%;--dw:15%" aria-label="Svetal Design Lab"><picture><source srcset="img/logos/svetaldesignlab-dark.webp" media="(prefers-color-scheme: dark)"><img src="img/logos/svetaldesignlab.webp" alt="" width="734" height="900" loading="lazy"></picture></button>
+        <button type="button" class="piece cutout" data-step="5" style="--x:3%;--y:52%;--w:27%;--r:-2deg;--dx:8%;--dy:54%;--dw:27%" aria-label="Топло: a radiator that spells warm"><img src="img/logos/toplo.webp" alt="" width="900" height="597" loading="lazy"></button>
+        <button type="button" class="piece cutout" data-step="6" style="--x:34%;--y:42%;--w:24%;--r:3deg;--dx:42%;--dy:53%;--dw:22%" aria-label="Hand-swan: the wing is an open hand"><picture><source srcset="img/logos/hand-swan-light.webp" media="(prefers-color-scheme: light)"><img src="img/logos/hand-swan.webp" alt="" width="900" height="748" loading="lazy"></picture></button>
+        <!-- Jumping figure: out for now (Kris, 18 Nov: white strokes to clean up). To bring it back, uncomment its dot, step and piece, and set Painted palm back to data-step="8". 
+        <button type="button" class="piece cutout" data-step="7" style="- -x:52%;- -y:76%;- -w:34%;- -r:-1deg;- -dx:58%;- -dy:62%;- -dw:30%" aria-label="Jumping figure"><img src="img/logos/jumping-figure.webp" alt="" width="900" height="332" loading="lazy"></button> -->
+        <button type="button" class="piece cutout" data-step="7" style="--x:81%;--y:42%;--w:15%;--r:4deg;--dx:74%;--dy:54%;--dw:11%" aria-label="Painted palm"><picture><source srcset="img/logos/palm-painted-dark.webp" media="(prefers-color-scheme: dark)"><img src="img/logos/palm-painted.webp" alt="" width="596" height="900" loading="lazy"></picture></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Magazine and covers (25 Nov): Kris's mock-ups from Images/Design/mockups ("use those for now"), trimmed to the
+       object and kept as cut-outs (transparent, with their own shadows), as WebP in img/mockups (big/ = only for the
+       enlarged view). Texts: drafts from what the mock-ups show; Kris to check. The CD cover prints the band's name as
+       "hiatus kayotee" (Hiatus Kaiyote), so the text leaves the name out until the mock-up is fixed. -->
+  <section class="project snap" id="magazine" data-group="Graphic design and illustrations" data-story aria-labelledby="mag-title">
+    <div class="in">
+      <div class="p-head">
+        <p class="p-eye">Graphic design · editorial</p>
+        <h2 class="p-title" id="mag-title">Magazine and covers</h2>
+        <p class="p-desc">A magazine spread and a CD cover, in mock-ups.</p>
+      </div>
+      <div class="p-body">
+        <div class="dots" role="group" aria-label="Magazine and covers">
+          <button type="button" class="dot" data-label="Magazine spread" aria-pressed="true"><span class="pill"><i></i><span class="lbl">Magazine spread</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="CD cover" aria-pressed="false"><span class="pill"><i></i><span class="lbl">CD cover</span><span class="bar"></span></span></button>
+        </div>
+        <div class="steps">
+          <div class="step is-on">
+            <p class="s-k">Magazine spread</p>
+            <p class="s-line">Two album reviews on one spread: serif headlines, and text in columns around the photos.</p>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">CD cover</p>
+            <p class="s-line">An album cover for <i>Choose Your Weapon</i>: a face inside an open mouth.</p>
+          </div>
+        </div>
+      </div>
+      <div class="collage">
+        <button type="button" class="piece mock" data-step="0" style="--x:2%;--y:12%;--w:60%;--r:-2deg;--dx:20%;--dy:12%;--dw:37.5%" aria-label="Magazine spread: two album reviews"><img src="img/mockups/magazine-spread.webp" data-big="img/mockups/big/magazine-spread.webp" alt="" width="1600" height="1146" loading="lazy"></button>
+        <button type="button" class="piece mock" data-step="1" style="--x:62%;--y:30%;--w:36%;--r:3deg;--dx:57.5%;--dy:30%;--dw:22.5%" aria-label="CD cover: Choose Your Weapon"><img src="img/mockups/cd-cover.webp" data-big="img/mockups/big/cd-cover.webp" alt="" width="900" height="804" loading="lazy"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Retouch (built 22 Nov): Kris's product retouching, laid out like the other projects. Each photo is the retouched one;
+       the original fades in under the mouse, as in Kris's Figma prototype (portfolio-site, image-wrapper: Dissolve 0.4 s,
+       ease-out), or while a finger rests on it (next.js). LOCKED (Kris, 22 Nov): client work, so the site only holds the
+       photos encrypted, in img/retouch-locked (made by portfolio-site-work/retouch-lock/lock-retouch.mjs from the plain
+       WebPs in Images/retouch/web, which are never published). Each img's data-lock names its file; the frames stay
+       empty until the password or Kris's unlock link opens them (next.js, "Retouch: locked"). Texts: Kris to check. -->
+  <section class="project snap is-locked" id="retouch" data-group="Graphic design and illustrations" data-story data-solo aria-labelledby="retouch-title">
+    <div class="in">
+      <div class="p-head">
+        <p class="p-eye">Graphic design · photo retouching</p>
+        <h2 class="p-title" id="retouch-title">Retouch</h2>
+        <p class="p-desc">Product photos for an online fashion shop, shown on request.</p>
+      </div>
+      <div class="p-body">
+        <form class="rt-lock">
+          <p class="s-k">Shown on request</p>
+          <p class="rt-lock-text">This is client work, so it isn’t public. Ask me and I’ll send you a link.</p>
+          <button type="button" class="ask" aria-expanded="false" aria-controls="rt-ways">Ask for access</button>
+          <div class="ways" id="rt-ways" hidden>
+            <p class="ways-k">Send the request with</p>
+            <div class="ways-row">
+              <a class="way" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=Kbmarchev%40gmail.com&amp;su=Request%20to%20see%20your%20retouching%20work&amp;body=Hi%20Kris%2C%0A%0AI%E2%80%99d%20like%20to%20see%20the%20Retouch%20section%20of%20your%20portfolio.%20Could%20you%20send%20me%20a%20link%3F%0A%0AName%3A%0ACompany%3A%0A%0AThank%20you" target="_blank" rel="noopener">Gmail</a>
+              <a class="way" href="https://outlook.office.com/mail/deeplink/compose?to=Kbmarchev%40gmail.com&amp;subject=Request%20to%20see%20your%20retouching%20work&amp;body=Hi%20Kris%2C%0A%0AI%E2%80%99d%20like%20to%20see%20the%20Retouch%20section%20of%20your%20portfolio.%20Could%20you%20send%20me%20a%20link%3F%0A%0AName%3A%0ACompany%3A%0A%0AThank%20you" target="_blank" rel="noopener">Outlook</a>
+              <a class="way" href="mailto:Kbmarchev@gmail.com?subject=Request%20to%20see%20your%20retouching%20work&amp;body=Hi%20Kris%2C%0A%0AI%E2%80%99d%20like%20to%20see%20the%20Retouch%20section%20of%20your%20portfolio.%20Could%20you%20send%20me%20a%20link%3F%0A%0AName%3A%0ACompany%3A%0A%0AThank%20you">Email app</a>
+              <button type="button" class="way" data-copy="Kbmarchev@gmail.com">Copy address</button>
+            </div>
+            <p class="ways-msg" role="status"></p>
+          </div>
+          <div class="rt-lock-row">
+            <input type="password" name="password" autocomplete="off" aria-label="Password" placeholder="Password" required>
+            <button type="submit" class="way">Unlock</button>
+          </div>
+          <p class="rt-lock-msg" role="status"></p>
+        </form>
+        <p class="p-note rt-hint">Point at a photo, or hold it, to see the original.</p>
+        <div class="dots" role="group" aria-label="Retouched photos">
+          <button type="button" class="dot" data-label="Coat" aria-pressed="true"><span class="pill"><i></i><span class="lbl">Coat</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Parka" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Parka</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Cape" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Cape</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Trousers" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Trousers</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Shearling jacket" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Shearling jacket</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Brown loafers" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Brown loafers</span><span class="bar"></span></span></button>
+          <button type="button" class="dot" data-label="Black loafers" aria-pressed="false"><span class="pill"><i></i><span class="lbl">Black loafers</span><span class="bar"></span></span></button>
+        </div>
+        <div class="steps">
+          <div class="step is-on">
+            <p class="s-k">Coat</p>
+            <p class="s-line">Colour corrected to a warmer beige.</p>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Parka</p>
+            <p class="s-line">Colour corrected, and the backdrop evened to a soft grey.</p>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Cape</p>
+            <p class="s-line">The dark wool evened out, on a soft grey backdrop.</p>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Trousers</p>
+            <p class="s-line">The crease at the fly smoothed out, and the backdrop brightened.</p>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Shearling jacket</p>
+            <p class="s-line">Stray fibres taken off the fleece, on a soft grey backdrop.</p>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Brown loafers</p>
+            <p class="s-line">Scuffs and creases off the leather, dust off the studs, and a white backdrop.</p>
+          </div>
+          <div class="step" aria-hidden="true">
+            <p class="s-k">Black loafers</p>
+            <p class="s-line">Dust and scuffs cleaned off the sole, and a white backdrop.</p>
+          </div>
+        </div>
+      </div>
+      <div class="collage">
+        <button type="button" class="piece rt" data-step="0" style="--x:2%;--y:3%;--w:17%;--r:-3deg;--dx:20%;--dy:3%;--dw:10.625%" aria-label="Coat, retouched"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='1020'/%3E" data-lock="coat-after" alt="" width="800" height="1020"><img class="rt-before" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='1020'/%3E" data-lock="coat-before" alt="" width="800" height="1020"><span class="rt-tag" aria-hidden="true">Before</span></button>
+        <button type="button" class="piece rt" data-step="1" style="--x:21.5%;--y:3%;--w:17%;--r:2deg;--dx:32.188%;--dy:3%;--dw:10.625%" aria-label="Parka, retouched"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='1020'/%3E" data-lock="parka-after" alt="" width="800" height="1020"><img class="rt-before" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='1020'/%3E" data-lock="parka-before" alt="" width="800" height="1020"><span class="rt-tag" aria-hidden="true">Before</span></button>
+        <button type="button" class="piece rt" data-step="2" style="--x:41%;--y:3%;--w:17%;--r:-2deg;--dx:44.375%;--dy:3%;--dw:10.625%" aria-label="Cape, retouched"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='1020'/%3E" data-lock="cape-after" alt="" width="800" height="1020"><img class="rt-before" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='1020'/%3E" data-lock="cape-before" alt="" width="800" height="1020"><span class="rt-tag" aria-hidden="true">Before</span></button>
+        <button type="button" class="piece rt" data-step="3" style="--x:60.5%;--y:3%;--w:17%;--r:3deg;--dx:56.563%;--dy:3%;--dw:10.625%" aria-label="Trousers, retouched"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='1020'/%3E" data-lock="trousers-after" alt="" width="800" height="1020"><img class="rt-before" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='1020'/%3E" data-lock="trousers-before" alt="" width="800" height="1020"><span class="rt-tag" aria-hidden="true">Before</span></button>
+        <button type="button" class="piece rt" data-step="4" style="--x:80%;--y:3%;--w:17%;--r:-2deg;--dx:68.75%;--dy:3%;--dw:10.625%" aria-label="Shearling jacket, retouched"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='1020'/%3E" data-lock="shearling-after" alt="" width="800" height="1020"><img class="rt-before" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='1020'/%3E" data-lock="shearling-before" alt="" width="800" height="1020"><span class="rt-tag" aria-hidden="true">Before</span></button>
+        <button type="button" class="piece rt" data-step="5" style="--x:9%;--y:37%;--w:30%;--r:-2deg;--dx:24.375%;--dy:37%;--dw:18.75%" aria-label="Brown loafers from behind, retouched"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1000' height='560'/%3E" data-lock="brown-back-after" alt="" width="1000" height="560"><img class="rt-before" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1000' height='560'/%3E" data-lock="brown-back-before" alt="" width="1000" height="560"><span class="rt-tag" aria-hidden="true">Before</span></button>
+        <button type="button" class="piece rt" data-step="5" style="--x:41%;--y:38%;--w:30%;--r:2deg;--dx:44.375%;--dy:38%;--dw:18.75%" aria-label="Brown loafer, the sole, retouched"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1000' height='560'/%3E" data-lock="brown-sole-after" alt="" width="1000" height="560"><img class="rt-before" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1000' height='560'/%3E" data-lock="brown-sole-before" alt="" width="1000" height="560"><span class="rt-tag" aria-hidden="true">Before</span></button>
+        <button type="button" class="piece rt" data-step="5" style="--x:73%;--y:35%;--w:18%;--r:-3deg;--dx:64.375%;--dy:35%;--dw:11.25%" aria-label="Brown loafer, the heel, retouched"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='756'/%3E" data-lock="brown-heel-after" alt="" width="700" height="756"><img class="rt-before" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='756'/%3E" data-lock="brown-heel-before" alt="" width="700" height="756"><span class="rt-tag" aria-hidden="true">Before</span></button>
+        <button type="button" class="piece rt" data-step="6" style="--x:26%;--y:66%;--w:30%;--r:2deg;--dx:35%;--dy:66%;--dw:18.75%" aria-label="Black loafer, the sole, retouched"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1000' height='560'/%3E" data-lock="black-sole-after" alt="" width="1000" height="560"><img class="rt-before" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1000' height='560'/%3E" data-lock="black-sole-before" alt="" width="1000" height="560"><span class="rt-tag" aria-hidden="true">Before</span></button>
+        <button type="button" class="piece rt" data-step="6" style="--x:58%;--y:63%;--w:16%;--r:-2deg;--dx:55%;--dy:63%;--dw:10%" aria-label="Black loafer, the heel, retouched"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='756'/%3E" data-lock="black-heel-after" alt="" width="700" height="756"><img class="rt-before" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='756'/%3E" data-lock="black-heel-before" alt="" width="700" height="756"><span class="rt-tag" aria-hidden="true">Before</span></button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<section class="end snap" id="about">
+  <div class="in">
+    <p class="p-eye">About</p>
+    <img class="about-photo" src="img/about/christian-marchew.webp" alt="Portrait of Christian Marchew" width="320" height="320" loading="lazy">
+    <h2 class="end-title">Christian Marchew</h2>
+    <p class="p-desc">I’m a UI/UX and graphic designer in Sofia. I trained in fine arts at the National Academy of Arts, in poster and visual communication and then illustration, and took Telerik Academy’s UX/UI program in 2024. Today I work as a graphic designer and project manager: retouching fashion photography, building Photoshop actions and working directly with clients.</p>
+    <!-- Logos instead of names (Kris, 19 Nov); the name shows on hover and is read out. Figma and Photoshop from Kris's
+         Images/Icons/programs folder, the rest from Wikimedia Commons (public domain or CC0). -->
+    <div class="about-tools"><span>I work in</span>
+      <ul class="tools">
+        <li data-label="Figma"><img src="img/tools/figma.svg" alt="Figma" width="200" height="300"></li>
+        <li data-label="Photoshop"><img src="img/tools/photoshop.svg" alt="Photoshop" width="240" height="234"></li>
+        <li data-label="Illustrator"><img src="img/tools/illustrator.svg" alt="Illustrator" width="250" height="250"></li>
+        <li data-label="Claude"><img src="img/tools/claude.svg" alt="Claude" width="100" height="100"></li>
+        <li data-label="Gemini"><img src="img/tools/gemini.svg" alt="Gemini" width="65" height="65"></li>
+        <li data-label="ChatGPT"><picture><source srcset="img/tools/chatgpt-dark.svg" media="(prefers-color-scheme: dark)"><img src="img/tools/chatgpt.svg" alt="ChatGPT" width="320" height="320"></picture></li>
+      </ul>
+    </div>
+    <!-- LinkedIn: add the link here once the URL is known. -->
+    <!-- Contact me opens the same ways to write as Retouch's Ask for access (Kris, 25 Nov); the CV downloads. -->
+    <div class="about-cta">
+      <div class="ask-row">
+        <button type="button" class="ask" aria-expanded="false" aria-controls="about-ways">Contact me</button>
+        <a class="way" href="files/Christian-Marchew-CV.pdf" download type="application/pdf" aria-label="Download CV (PDF)">Download CV</a>
+      </div>
+      <div class="ways" id="about-ways" hidden>
+        <p class="ways-k">Write to me with</p>
+        <div class="ways-row">
+          <a class="way" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=Kbmarchev%40gmail.com&amp;su=Hello%20from%20your%20portfolio&amp;body=Hi%20Kris%2C%0A%0A" target="_blank" rel="noopener">Gmail</a>
+          <a class="way" href="https://outlook.office.com/mail/deeplink/compose?to=Kbmarchev%40gmail.com&amp;subject=Hello%20from%20your%20portfolio&amp;body=Hi%20Kris%2C%0A%0A" target="_blank" rel="noopener">Outlook</a>
+          <a class="way" href="mailto:Kbmarchev@gmail.com?subject=Hello%20from%20your%20portfolio&amp;body=Hi%20Kris%2C%0A%0A">Email app</a>
+          <button type="button" class="way" data-copy="Kbmarchev@gmail.com">Copy address</button>
+        </div>
+        <p class="ways-msg" role="status"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- Big view for posters (main.js). A click anywhere or Esc closes it. -->
+<!-- blend at phone size (Kris, 25 Nov: "the mobile version is where it shines"): on laptops, Open the live app opens
+     this instead of a new tab: the live app running in a phone frame, and a link to the laptop layout (next.js, .pv).
+     Phones open the app itself. -->
+<dialog class="pv" aria-labelledby="pv-title">
+  <button type="button" class="viewer-x pv-x" aria-label="Close">×</button>
+  <div class="pv-in">
+    <div class="pv-phone"><div class="pv-bezel"><div class="pv-screen"><div class="pv-status" aria-hidden="true"><span class="pv-time">9:41</span><svg class="pv-icons" viewBox="0 0 75 13" fill="currentColor"><rect x="0" y="8.5" width="3" height="4" rx=".8"/><rect x="4.7" y="6" width="3" height="6.5" rx=".8"/><rect x="9.4" y="3.5" width="3" height="9" rx=".8"/><rect x="14.1" y="1" width="3" height="11.5" rx=".8"/><path d="M29.5 2.6c2.5 0 4.8 1 6.5 2.6l1.2-1.3C35.2 2 32.5.8 29.5.8s-5.7 1.2-7.7 3.1L23 5.2c1.7-1.6 4-2.6 6.5-2.6Zm0 3.6c1.5 0 2.9.6 3.9 1.6l1.2-1.3c-1.3-1.3-3.1-2.1-5.1-2.1s-3.8.8-5.1 2.1l1.2 1.3c1-1 2.4-1.6 3.9-1.6Zm0 3.5c.6 0 1.1.2 1.5.6l-1.5 1.6-1.5-1.6c.4-.4.9-.6 1.5-.6Z"/><rect x="45.5" y=".9" width="24" height="11.2" rx="3.4" fill="none" stroke="currentColor" stroke-opacity=".4"/><rect x="47.3" y="2.7" width="20.4" height="7.6" rx="2"/><path d="M71.3 4.6v3.8c.8-.3 1.4-1.1 1.4-1.9s-.6-1.6-1.4-1.9Z" fill-opacity=".45"/></svg></div><iframe class="pv-frame" title="blend, the live app" width="430" height="839" allow="camera; clipboard-write"></iframe><div class="pv-home" aria-hidden="true"></div><span class="pv-island" aria-hidden="true"></span></div></div></div>
+    <div class="pv-side">
+      <p class="p-eye">Live app</p>
+      <h2 class="pv-title" id="pv-title">blend is made for your phone</h2>
+      <p class="pv-text">Try it here at phone size, or scan the code to open it on your own phone.</p>
+      <img class="pv-qr" src="img/blend-qr.svg" alt="QR code that opens blend on your phone" width="148" height="148">
+      <a class="pv-wide" href="https://90tsky.github.io/blend/" target="_blank" rel="noopener">Open the laptop version <span class="arw" aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+</dialog>
+<dialog class="viewer" aria-label="Poster, larger">
+  <button type="button" class="viewer-x" aria-label="Close" autofocus>×</button>
+  <div class="viewer-stage"></div>
+</dialog>
+</body>
+</html>

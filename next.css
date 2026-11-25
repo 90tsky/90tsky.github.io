@@ -1,0 +1,602 @@
+/* The portfolio's styles (index.html; this was the test layout until 25 Nov). Colours and fonts are placeholders until the visual style is decided.
+   Pens from the sketch: ink = what's on screen, red = notes and the active state. */
+:root{
+  --paper:#f9f9f7; --card:#ffffff; --ink:#161616; --ink-2:#53555a; --ink-3:#8a8c91;
+  --line:#e1e0db; --wire:#f0efea; --red:#cf3027; --on-ink:#f9f9f7; --track:rgb(255 255 255 / .28);
+  --shadow:0 1px 2px rgb(20 20 20 / .08), 0 12px 32px rgb(20 20 20 / .14);
+  --pop:0 4px 10px rgb(20 20 20 / .12), 0 30px 64px rgb(20 20 20 / .30);
+  /* The same two shadows as drop shadows, for cut-outs (the mock-ups): they follow the outline instead of a card. */
+  --drop:drop-shadow(0 1px 2px rgb(20 20 20 / .08)) drop-shadow(0 12px 32px rgb(20 20 20 / .14));
+  --drop-pop:drop-shadow(0 4px 10px rgb(20 20 20 / .12)) drop-shadow(0 30px 64px rgb(20 20 20 / .30));
+  --logo-shadow:0 14px 18px rgb(20 20 20 / .24);
+  --logo-shadow-pop:0 24px 26px rgb(20 20 20 / .32);
+  --f-body:"Instrument Sans","Segoe UI",system-ui,-apple-system,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  /* Two fonts: Instrument Sans for everything you read, JetBrains Mono (500 only) for small labels and numbers, in one
+     size (--label) and one smaller size for the bar (--label-s), always capitals with the same spacing (25 Nov: the
+     labels had drifted into six near-identical sizes and a faked bold). */
+  --label:500 .72rem/1.3 var(--f-mono);
+  --label-s:500 .6rem/1.4 var(--f-mono);
+  --label-ls:.09em;
+  --ease-out:cubic-bezier(.2,.8,.2,1);
+  --pop-scale:1.1;  /* how much every card in a collage grows when it pops (hover, focus, the current step); ?tune tries it live */
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root{
+  --paper:#141517; --card:#1c1d20; --ink:#ebeae5; --ink-2:#a8a9ad; --ink-3:#76787d;
+  --line:#2c2e32; --wire:#25272b; --red:#ff6b5d; --on-ink:#141517; --track:rgb(0 0 0 / .25);
+  --shadow:0 1px 2px rgb(0 0 0 / .4), 0 12px 32px rgb(0 0 0 / .5);
+  --pop:0 4px 10px rgb(0 0 0 / .4), 0 30px 64px rgb(0 0 0 / .7);
+  --drop:drop-shadow(0 1px 2px rgb(0 0 0 / .4)) drop-shadow(0 12px 32px rgb(0 0 0 / .5));
+  --drop-pop:drop-shadow(0 4px 10px rgb(0 0 0 / .4)) drop-shadow(0 30px 64px rgb(0 0 0 / .7));
+  --logo-shadow:0 14px 22px rgb(0 0 0 / .7);
+  --logo-shadow-pop:0 24px 30px rgb(0 0 0 / .8);
+  color-scheme:dark}}
+
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:1.0625rem/1.55 var(--f-body);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}  /* 17px in rem, so the reader's own text size applies */
+p,h1,h2{margin:0}
+h1,h2{text-wrap:balance}
+p{text-wrap:pretty}  /* no lone word on a paragraph's last line (20 Nov, typography review) */
+a,button{touch-action:manipulation}
+html:not(.is-app){scroll-padding-bottom:var(--bar-room,84px)}  /* phones: what the keyboard reaches never hides under the bar */
+/* "Skip to the projects": first on the page for keyboard users, hidden until it has focus (20 Nov, guidelines review) */
+.skip-link{position:fixed;left:12px;top:12px;z-index:100;padding:10px 18px;border-radius:99px;background:var(--ink);color:var(--on-ink);font-weight:600;text-decoration:none;transform:translateY(-200%)}
+.skip-link:focus-visible{transform:none}
+img{max-width:100%}
+a{color:inherit}
+button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+
+.snap{padding-left:max(clamp(16px,5vw,72px),env(safe-area-inset-left,0px));padding-right:max(clamp(16px,5vw,72px),env(safe-area-inset-right,0px))}
+.in{max-width:1280px;margin-inline:auto;width:100%}
+
+/* ---------- intro ---------- */
+.intro{display:flex;align-items:flex-end;padding-top:max(72px,env(safe-area-inset-top,0px));padding-bottom:56px;min-height:72svh}
+.intro h1{font-size:clamp(3rem,9vw,7.5rem);font-weight:700;letter-spacing:-.045em;line-height:.95}
+.intro-sub{font-size:clamp(1.1rem,2vw,1.4rem);color:var(--ink-2);margin-top:16px;max-width:36ch}
+.chip{min-height:44px;border:1.5px solid var(--ink);background:transparent;border-radius:99px;padding:8px 18px;font-weight:600;cursor:pointer;transition:background-color .2s}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--on-ink)}
+@media (hover:hover){.chip:not([aria-pressed="true"]):hover{background:var(--wire)}}
+/* Each project's main button is solid (Kris, 25 Nov), inverted for the colour mode like Ask for access: a dark pill with
+   light text in light mode, a light pill with dark text in dark mode. Open the live app, Open the live dashboard and See
+   yourself in the silver all match. With the camera on, "Turn camera off" goes back to an outline, so the two states
+   stay apart. */
+.p-body>.p-link,.p-body>.sb-cam{background:var(--ink);color:var(--on-ink);border-color:var(--ink)}
+/* Their states (Kris, 25 Nov: "grow 8% on hover"; checked against Google's Material 3 states and the Web Interface
+   Guidelines): hover grows 8% and lays the label colour over the fill at 8% (M3's hover state layer: a black button
+   gets a touch lighter, a light one a touch darker), with M3's small lift. Pressed: a 10% layer and no lift, settling
+   to 4% bigger (on touch, where there's no hover, a slight press-in instead). Keyboard focus: a ring. It used to turn
+   mid grey, which lowered the contrast with its text. Only scale, colours and the shadow move; no growing with
+   reduced motion. Ask for access (Retouch) and Contact me (About) do the same. */
+.p-body>.p-link,.p-body>.sb-cam,.ask{transition:scale .2s var(--ease-out),background-color .2s,border-color .2s,color .2s,box-shadow .2s}
+@media (hover:hover){
+  .p-body>.p-link:hover,.p-body>.sb-cam:hover,.ask:hover{scale:1.08}
+  .p-body>.p-link:hover,.p-body>.sb-cam:not([aria-pressed="true"]):hover,.ask:hover{background:color-mix(in srgb,var(--ink) 92%,var(--on-ink));border-color:color-mix(in srgb,var(--ink) 92%,var(--on-ink));box-shadow:0 1px 2px rgb(0 0 0 / .3),0 1px 3px 1px rgb(0 0 0 / .15)}
+  .p-body>.p-link:active,.p-body>.sb-cam:active,.ask:active{scale:1.04}
+}
+.p-body>.p-link:active,.p-body>.sb-cam:active,.ask:active{box-shadow:none}
+.p-body>.p-link:active,.p-body>.sb-cam:not([aria-pressed="true"]):active,.ask:active{background:color-mix(in srgb,var(--ink) 90%,var(--on-ink));border-color:color-mix(in srgb,var(--ink) 90%,var(--on-ink))}
+@media (hover:none){.p-body>.p-link:active,.p-body>.sb-cam:active,.ask:active{scale:.97}}
+.p-body>.p-link:focus-visible,.p-body>.sb-cam:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.p-body>.p-link,.p-body>.sb-cam,.ask{scale:none!important}}
+.p-body>.sb-cam[aria-pressed="true"]{background:transparent;color:var(--ink);border-color:var(--ink)}
+@media (hover:hover){.p-body>.sb-cam[aria-pressed="true"]:hover{background:var(--wire)}}
+
+/* ---------- project screen (decision 2A: story left, collage right) ---------- */
+.project{padding-block:56px}
+.project .in{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);
+  grid-template-areas:".    collage" "head collage" "body collage" ".    collage";
+  grid-template-rows:1fr auto auto 1fr;column-gap:clamp(32px,5vw,80px)}
+.p-head{grid-area:head;display:flex;flex-direction:column;gap:14px}
+.p-body{grid-area:body;display:flex;flex-direction:column;gap:18px;margin-top:24px;align-items:flex-start}
+.p-eye{font:var(--label);letter-spacing:var(--label-ls);text-transform:uppercase;color:var(--ink-3)}
+.p-title{font-size:clamp(2.6rem,5.4vw,5.5rem);font-weight:700;letter-spacing:-.045em;line-height:.92}
+.p-desc{font-size:1.06rem;color:var(--ink-2);max-width:42ch}
+.p-note{font-size:.95rem;color:var(--ink-3);max-width:42ch}
+/* Action buttons (Kris, 15 Nov): one look and one place for every project's button, the links out and Silver Bliss's camera
+   button alike: an outlined pill (Kris picked it over a filled one and one that underlines on hover). No underline: the pill
+   already says "button". The ↗ only goes on links that leave the site (they open in a new tab), and it lifts on hover. */
+.p-link{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:8px 18px;border:1.5px solid var(--ink);border-radius:99px;
+  font-weight:600;font-size:.95rem;text-decoration:none;transition:background-color .2s,color .2s}
+.arw{display:inline-block;transition:transform .25s var(--ease-out)}
+@media (hover:hover){
+  .p-link:hover{background:var(--wire)}
+  .p-link:hover .arw{transform:translate(2px,-2px)}
+}
+
+/* dots (decision 5C: the active dot opens into its name; its underline is the autoplay progress) */
+.dots{display:flex;flex-wrap:wrap;align-items:center;margin-left:-6px}
+.dot{position:relative;min-height:44px;display:inline-flex;align-items:center;padding:7px 4px;border:0;background:none;cursor:pointer}
+.pill{position:relative;display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 8px;border-radius:99px;transition:background-color .25s,padding .35s var(--ease-out)}
+.pill i{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--ink);flex:none;transition:background-color .2s,border-color .2s}
+.lbl{font-weight:600;font-size:.92rem;white-space:nowrap;max-width:0;opacity:0;overflow:hidden;transition:max-width .35s var(--ease-out),opacity .2s}
+.bar{position:absolute;left:12px;right:12px;bottom:4px;height:2px;border-radius:2px;background:var(--track);overflow:hidden;opacity:0}
+.bar::after{content:"";display:block;height:100%;width:var(--p,0%);background:var(--red)}
+.dot[aria-pressed="true"] .pill{background:var(--ink);color:var(--on-ink);padding:0 14px 0 10px}
+.dot[aria-pressed="true"] .pill i{background:var(--red);border-color:var(--red)}
+.dot[aria-pressed="true"] .lbl{max-width:12em;opacity:1}
+.bar{display:none}  /* no progress timer (Kris, 18 Nov) */
+.dot::after{content:attr(data-label);position:absolute;left:50%;bottom:calc(100% - 6px);transform:translateX(-50%);background:var(--ink);color:var(--on-ink);font-size:.8rem;font-weight:600;padding:4px 9px;border-radius:7px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s,display .15s allow-discrete;z-index:10;display:none}
+/* Out of the layout until it shows (display:none): the hidden labels of dots near the right edge made the phone page
+   30px wider than the screen (20 Nov). @starting-style keeps the fade in. */
+.dot[aria-pressed="false"]:focus-visible::after{display:block;opacity:1}
+@starting-style{.dot[aria-pressed="false"]:focus-visible::after{opacity:0}}
+@media (hover:hover){
+  .dot[aria-pressed="false"]:hover::after{display:block;opacity:1}
+  @starting-style{.dot[aria-pressed="false"]:hover::after{opacity:0}}
+  .dot[aria-pressed="false"]:hover .pill i{background:var(--ink-3)}
+}
+
+/* step texts: all stacked in one cell, so the column keeps the height of the longest one */
+.steps{display:grid;max-width:44ch}
+.step{grid-area:1/1;display:flex;flex-direction:column;gap:8px;color:var(--ink-2);opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.step.is-on{opacity:1;visibility:visible}
+.step b{color:var(--ink)}
+/* Dot titles (Kris, 25 Nov, chose option C of four rendered on the page): a heading in the body face, semibold, in
+   the text colour, with the short line under it in grey. They used to be red monospaced capitals, but red is the
+   colour of "current" (the dot), so every title read as active. The mono capitals stay for small labels (eyebrows,
+   Why?). */
+.s-k{font:700 1.1875rem/1.25 var(--f-body);letter-spacing:-.01em;color:var(--ink)}
+/* Then Kris found them bland (option G of four): bolder and a little bigger, each with its number in red (01, 02…, in
+   the dots' order), the one red accent in the list, and Why? in the sans, so the list reads in one family and mono is
+   only for labels and numbers. */
+.steps{counter-reset:dot}
+.step{counter-increment:dot}
+.step .s-k::before{content:counter(dot,decimal-leading-zero);font:var(--label);letter-spacing:var(--label-ls);color:var(--red);margin-right:.75em;position:relative;top:-.15em}
+/* Short lines (Kris, 25 Nov: "reduce the description texts"; people looked at the pictures and scrolled past the text):
+   one line per dot that everyone sees, and the full Problem / Decision text one click away behind "Why?" ("More" for a
+   work's story), for whoever wants the reasons. */
+.s-line{margin:0;color:var(--ink-2)}
+.s-why{margin:0;color:var(--ink-2)}
+.s-why>summary{display:inline-flex;align-items:center;gap:8px;min-height:32px;cursor:pointer;list-style:none;font:600 .8125rem var(--f-body);color:var(--ink-3);-webkit-user-select:none;user-select:none}
+.s-why>summary::-webkit-details-marker{display:none}
+.s-why>summary::after{content:"";width:.45em;height:.45em;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-.15em) rotate(45deg);transition:transform .2s var(--ease-out)}
+.s-why[open]>summary::after{transform:translateY(.1em) rotate(225deg)}
+@media (hover:hover){.s-why>summary:hover{color:var(--ink)}}
+@media (pointer:coarse){.s-why>summary{min-height:44px}}  /* a finger-sized target on phones */
+.s-why>summary:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:4px}
+.s-why-body{display:flex;flex-direction:column;gap:8px;padding:2px 0 4px}
+.s-why-body p{margin:0}
+.s-why[open] .s-why-body{animation:why-in .25s var(--ease-out)}
+@keyframes why-in{from{opacity:0;transform:translateY(-4px)}}
+
+/* collage (decision 3A: the active piece grows and lifts; the others stay as they are) */
+.collage{grid-area:collage;align-self:center;justify-self:center;position:relative;width:min(100%,calc(76svh * 1.25));aspect-ratio:5/4}
+.piece{position:absolute;left:var(--x);top:var(--y);width:var(--w);padding:0;border:0;background:none;border-radius:14px;box-shadow:var(--shadow);transform:rotate(var(--r,0deg)) scale(var(--s,1));transition:transform var(--pop-dur,.4s) var(--pop-ease,var(--ease-out)),box-shadow var(--pop-dur,.4s) var(--pop-ease,var(--ease-out));z-index:1}
+button.piece{cursor:pointer}
+/* Without the laptop layout (phones, narrow windows, tablets): tidy rows too (Kris, 25 Nov; next.js, tidyPhone adds
+   .is-tidy only then). The box is as tall as the rows, nothing tilted; the tilt is set on each picture, so it takes
+   !important to undo, as on laptops. */
+.collage.is-tidy{aspect-ratio:auto;height:var(--ph)}
+.collage.is-tidy .piece{left:var(--px);top:var(--py);width:var(--pw);--r:0deg!important}
+.piece img{display:block;width:100%;height:auto;border-radius:inherit}
+.piece.ph-piece{height:var(--h);display:grid;place-items:center;text-align:center;padding:10px;border:1.5px dashed var(--ink-3);background:var(--card);box-shadow:none;font:var(--label);letter-spacing:var(--label-ls);color:var(--ink-3)}
+.piece.ph-piece.is-on{box-shadow:var(--pop);color:var(--ink)}
+/* One pop for every card in a collage (Kris, 18 Nov): it grows by --pop-scale and lifts (--pop) when the mouse is on it
+   or it has keyboard focus, and the current step's card in a project stays popped (3A). Change --pop-scale or --pop and
+   every card follows. Cut-out logos lift on their card instead of a shadow; Silver Bliss's live logo doesn't pop. */
+.piece.is-on,.piece:focus-visible{--s:var(--pop-scale);z-index:5;box-shadow:var(--pop)}
+@media (hover:hover){.collage .piece:not(.sb-chrome):hover{--s:var(--pop-scale);z-index:5;box-shadow:var(--pop)}}
+.ph-box{position:absolute;inset:14% 16%;border:1.5px dashed var(--ink-3);border-radius:16px;display:grid;place-items:center;text-align:center;padding:16px;font:var(--label);letter-spacing:var(--label-ls);text-transform:uppercase;color:var(--ink-3)}
+
+/* ---------- animated posters (DESIGN.md, Animated posters) ----------
+   Each layer holds its first-frame place, springs to --to, holds, and springs back, with the Figma prototype's timings.
+   They run only while on screen (main.js adds .is-playing). Inside the poster buttons they are spans, made blocks here. */
+.poster-anim{display:block;position:relative;aspect-ratio:var(--ar);overflow:hidden;border-radius:inherit;isolation:isolate}
+.poster-anim .pa{position:absolute;left:var(--lx,0);top:var(--ly,0);width:var(--lw,100%);height:var(--lh,auto);max-width:none;border-radius:0;transform-origin:var(--org,50% 50%)}
+.poster-anim .pa-fill{display:block;width:100%;height:auto;border-radius:0}
+.poster-anim .pa-part{position:absolute;left:var(--px);top:var(--py);width:var(--pw);height:auto;max-width:none;border-radius:0}
+.poster-anim .pa-cover{left:0;top:0;width:100%;height:100%}
+.poster-anim .pa-fade{opacity:0}
+.poster-anim .pa-dark{background:#000}
+.poster-anim.is-playing .pa{animation-play-state:running}
+
+/* Posters pop like blend's pieces (3A) under the mouse or keyboard focus. A click or tap opens the big view. */
+.piece.poster-btn{cursor:zoom-in}
+.piece.poster-btn.is-open{--s:var(--pop-scale);z-index:5;box-shadow:var(--pop)}  /* stays popped behind the big view instead of shrinking back */
+
+/* Big view: the poster as tall as the screen allows, on a dark backdrop. A click anywhere or Esc closes it. */
+.viewer{width:100vw;height:100vh;height:100svh;max-width:none;max-height:none;margin:0;padding:0;border:0;background:transparent;display:grid;place-items:center;cursor:zoom-out}
+.viewer:not([open]){display:none}
+/* blend at phone size (.pv, next.js; Kris, 25 Nov): the live app in a phone frame on the dark backdrop, as tall as the
+   screen allows (900 at most), with its text beside it in light type whatever the mode. */
+.pv{width:100vw;height:100vh;height:100svh;max-width:none;max-height:none;margin:0;padding:0;border:0;background:transparent;color:#ebeae5}
+.pv:not([open]){display:none}
+.pv::backdrop{background:rgb(12 12 12 / .94);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.pv-in{height:100%;display:flex;align-items:center;justify-content:center;gap:clamp(32px,5vw,80px);padding:32px}
+/* The phone, drawn in code (Kris, 25 Nov: the first frame was "ugly"; blend was designed for the iPhone 14 Pro Max).
+   Measured in the phone's points, --u each, so it scales as one piece: the 430 x 932 screen with 55-point corners, a
+   12-point black bezel, a 5-point space-black steel band (464 x 966 in all, 72-point corners), the Dynamic Island
+   (126 x 37, 11 from the top), the action button and volume buttons on the left and the side button on the right. */
+.pv-phone{--h:min(calc(100svh - 64px),900px);--u:calc(var(--h) / 966);position:relative;flex:none;height:var(--h);width:calc(var(--u) * 464);padding:calc(var(--u) * 5);border-radius:calc(var(--u) * 72);
+  background:linear-gradient(135deg,#6a6b70 0%,#323336 9%,#1d1d1f 30%,#26272a 62%,#1b1b1d 84%,#5c5d62 100%);
+  box-shadow:inset 0 0 0 1px rgb(255 255 255 / .16),inset 0 0 0 calc(var(--u) * 2) rgb(0 0 0 / .35),0 0 0 1px #08080a,0 40px 90px rgb(0 0 0 / .6)}
+.pv-phone::before,.pv-phone::after{content:"";position:absolute;width:calc(var(--u) * 3.5)}
+.pv-phone::before{left:calc(var(--u) * -3);top:calc(var(--u) * 172);height:calc(var(--u) * 238);border-radius:calc(var(--u) * 2) 0 0 calc(var(--u) * 2);
+  background:linear-gradient(#3a3b3f 0 calc(var(--u) * 34),transparent 0 calc(var(--u) * 74),#3a3b3f 0 calc(var(--u) * 140),transparent 0 calc(var(--u) * 172),#3a3b3f 0)}
+.pv-phone::after{right:calc(var(--u) * -3);top:calc(var(--u) * 262);height:calc(var(--u) * 104);border-radius:0 calc(var(--u) * 2) calc(var(--u) * 2) 0;background:#3a3b3f}
+.pv-bezel{height:100%;padding:calc(var(--u) * 12);border-radius:calc(var(--u) * 67);background:#050506;box-shadow:inset 0 0 0 1px #17171a}
+.pv-screen{position:relative;height:100%;border-radius:calc(var(--u) * 55);overflow:hidden;background:#f4efee;isolation:isolate}
+.pv-island{position:absolute;top:calc(var(--u) * 11);left:50%;width:calc(var(--u) * 126);height:calc(var(--u) * 37);transform:translateX(-50%);border-radius:999px;background:#000;pointer-events:none}
+/* As on the phone, blend's home-screen app (Kris, 25 Nov: "the ratio isnt right", with a screenshot from the phone):
+   the black status bar (59 points, the island inside it) is above the app, not over it, and the app keeps the
+   34-point home-indicator strip clear at the bottom. So the app gets 430 x 839, the size it lays out for on the phone
+   (a page in a frame isn't told about either strip). The strip is blend's background: it starts light whatever the device's mode (dark is in its Menu). */
+.pv-status{position:absolute;inset:0 0 auto;height:calc(var(--u) * 59);background:#000;color:#fff;font:600 calc(var(--u) * 17)/1 system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:-.01em}
+.pv-time{position:absolute;left:calc(var(--u) * 46);top:calc(var(--u) * 21)}
+.pv-icons{position:absolute;right:calc(var(--u) * 33);top:calc(var(--u) * 23);width:calc(var(--u) * 75);height:calc(var(--u) * 13)}
+.pv-frame{position:absolute;left:0;top:calc(var(--u) * 59);display:block;width:430px;height:839px;border:0;transform-origin:0 0;background:#f4efee}
+.pv-home{position:absolute;inset:auto 0 0;height:calc(var(--u) * 34);background:#f4efee}
+.pv-home::after{content:"";position:absolute;left:50%;bottom:calc(var(--u) * 8);width:calc(var(--u) * 139);height:calc(var(--u) * 5);transform:translateX(-50%);border-radius:99px;background:#111}
+
+.pv-side{max-width:20rem}
+.pv .p-eye{color:rgb(255 255 255 / .55)}
+.pv-title{margin:10px 0 14px;font:700 clamp(1.5rem,2.2vw,2rem)/1.15 var(--f-body);letter-spacing:-.015em;color:#fff}
+.pv-text{margin:0 0 20px;color:rgb(255 255 255 / .72)}
+.pv-qr{display:block;width:148px;height:148px;margin:0 0 24px -.5px;padding:8px;border-radius:12px;background:#fff}  /* 4 px a square, with a white edge 4 squares wide */
+.pv-wide{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:8px 18px;border:1.5px solid rgb(255 255 255 / .55);border-radius:99px;color:#fff;font-weight:600;font-size:.95rem;text-decoration:none;transition:background-color .2s,border-color .2s}
+@media (hover:hover){.pv-wide:hover{background:rgb(255 255 255 / .1);border-color:#fff}.pv-wide:hover .arw{transform:translate(2px,-2px)}}
+.pv-wide:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.viewer::backdrop{background:rgb(12 12 12 / .88)}
+.viewer-art{width:min(calc(100vw - 32px),calc(92svh * var(--ar)));height:auto;aspect-ratio:var(--ar);border-radius:12px;overflow:hidden;box-shadow:0 30px 80px rgb(0 0 0 / .5);animation:viewer-in .3s var(--ease-out)}
+@keyframes viewer-in{from{opacity:0;transform:scale(.96)}}
+.viewer-art.poster-anim .pa{animation-delay:0s}  /* a full first look (3 s for the wolf) before anything moves */
+.viewer-x{position:fixed;top:max(12px,env(safe-area-inset-top,0px));right:max(12px,env(safe-area-inset-right,0px));width:44px;height:44px;border:0;border-radius:50%;background:rgb(255 255 255 / .14);color:#fff;font-size:1.6rem;line-height:1;cursor:pointer}
+@media (hover:hover){.viewer-x:hover{background:rgb(255 255 255 / .26)}}
+html:has(.viewer[open]),html:has(.pv[open]){overflow:hidden;padding-right:var(--sbw,0px)}  /* --sbw (main.js): the scrollbar's width, so the page behind doesn't slide sideways when the scrollbar goes */
+
+/* Вълкът и 7-те козлета: waits 3 s (0.8 s the first time, as in the prototype), then Figma's "Quick" spring over 2.3 s:
+   the title drops in front of the wolf (below), the fish swim apart, and the wolf turns black and shrinks to 87% towards a point above
+   its feet, as if walking away. Holds 1.2 s in the dark, then springs back in 1.76 s. */
+.pa-wolf{--ar:2925/4095;background:#000;
+  --spring:linear(0,.032,.116,.232,.364,.5,.631,.749,.852,.936,1.002,1.05,1.082,1.101,1.108,1.107,1.099,1.088,1.074,1.059,1.045,1.031,1.019,1.01,1.002,.996,.992,.99,.988,.988,.989,.99,.991,.993,.995,.996,.997,.999,1,1,1.001,1.001,1.001,1.001,1.001,1.001,1.001,1.001,1)}
+.pa-wolf .pa{animation:pa-wolf 8.26s -2.2s infinite paused;animation-timing-function:var(--spring)}
+/* The black over the wolf follows the same spring, but stops once it's fully black: the spring's settle back below 1
+   (to .988) let the wolf glow through for a moment at the end (Kris, 15 Nov). Same speed up to full black, no dip. */
+.pa-wolf .pa-dark{animation-timing-function:linear(0,.032,.116,.232,.364,.5,.631,.749,.852,.936,1 20.83%,1)}
+/* The spring is each layer's timing function, so it runs on every move between two keyframes (holds don't move). */
+@keyframes pa-wolf{
+  0%,36.32%,100%{transform:none;opacity:var(--o0,1)}
+  64.2%,78.72%{transform:var(--to,none);opacity:var(--o1,1)}
+}
+
+/* The title (Kris, 22 Nov): it lifts just clear of the horns (2.5% of the poster, 10.2% of its own height, so it never
+   leaves the frame), moves in front of the wolf, and drops to the middle of the black with the same spring (139.2% down,
+   1.2% right, measured on the lettering). On the way back it rises over the wolf to the same spot above the horns,
+   goes behind him there, and settles where it started. The layer only changes while the title is clear of the head. */
+.pa-wolf .pa-title{animation-name:pa-wolf-title}
+@keyframes pa-wolf-title{
+  0%,36.32%{transform:none;animation-timing-function:ease-in-out}
+  41.16%{transform:translate(0,-10.2%)}
+  64.2%,78.72%{transform:translate(1.2%,139.2%);animation-timing-function:cubic-bezier(.3,0,.2,1)}
+  90.8%{transform:translate(0,-10.2%);animation-timing-function:ease-in-out}
+  100%{transform:none}
+  0%,41.1%{z-index:0}
+  41.11%,90.8%{z-index:1}
+  90.81%,100%{z-index:0}
+}
+
+/* LEBANON: waits 4.6 s, then the prototype's custom spring (stiffness 91.8, damping 10.7) over 1.39 s: the bowl spins
+   52° and rolls out to the left, the title drops to the middle at 64%, the credits drop out, the sky draws back a little
+   and its clouds go from 65% to full. Holds 2 s and springs back. The sky starts at 109.5% so it never shows an edge. */
+.pa-leb{--ar:3146/4404;background:#589ff0;
+  --spring:linear(0,.034,.123,.246,.385,.528,.663,.785,.888,.971,1.034,1.078,1.105,1.118,1.12,1.114,1.101,1.086,1.069,1.052,1.036,1.022,1.01,1.001,.994,.989,.987,.986,.986,.987,.988,.99,.992,.994,.996,.998,.999,1,1.001,1.001,1.002,1.002,1.002,1.002,1.001,1.001,1.001,1.001,1)}
+.pa-leb .pa{animation:pa-leb 9.375s infinite paused;animation-timing-function:var(--spring)}
+.pa-leb .pa-sky{scale:1.095}
+@keyframes pa-leb{
+  0%,49.07%,100%{transform:none;opacity:var(--o0,1)}
+  63.87%,85.2%{transform:var(--to,none);opacity:var(--o1,1)}
+}
+
+/* Silver Bliss chrome logo (chrome-logo.js): a cut-out with a soft shadow, no card. The canvas fades in over the picture once the shader is ready. */
+.piece.sb-chrome{background:none;box-shadow:none;border-radius:0;filter:drop-shadow(var(--logo-shadow))}
+.sb-chrome img{transition:opacity .6s var(--ease-out)}
+.sb-chrome canvas{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .6s var(--ease-out)}
+.sb-chrome.is-live canvas{opacity:1}
+.sb-chrome.is-live img{opacity:0}
+.sb-cam-note{font-size:.85rem;color:var(--ink-3);max-width:42ch;margin:-8px 0 0}
+.sb-cam-note:empty{display:none}
+
+/* Loops and cut-outs in collages (13 Nov). Loops play only on screen (main.js). Cut-out logos have no card: a soft shadow follows their shape. */
+.piece video{display:block;width:100%;height:auto;border-radius:inherit}
+.piece picture{display:block}
+/* Mock-ups (Magazine and covers, 25 Nov): cut-outs that bring their own shadows, so no card or frame shadow; they
+   still grow when they're pointed at, opened or enlarged. */
+.piece.mock,.piece.mock.is-on,.piece.mock:focus-visible,.piece.mock.is-big,.is-app .piece.mock.is-lit,.is-app .piece.mock.is-wait{background:none;box-shadow:none;border-radius:0}
+.piece.mock img{border-radius:0}
+@media (hover:hover){.collage .piece.mock:hover{box-shadow:none}}
+/* Their shadows are the posters' (Kris, 25 Nov: "droped shadows on the magazine and cover same as the posters keep
+   everything concistent"): --shadow at rest and --pop when they pop, as drop shadows round the outline. */
+.piece.mock{filter:var(--drop);transition:transform var(--pop-dur,.4s) var(--pop-ease,var(--ease-out)),filter var(--pop-dur,.4s) var(--pop-ease,var(--ease-out))}
+.piece.mock.is-on,.piece.mock:focus-visible,.project[data-story] .piece.mock.is-big,.is-app .piece.mock.is-lit{filter:var(--drop-pop)}
+@media (hover:hover){.collage .piece.mock:hover{filter:var(--drop-pop)}}
+.is-app .collage .piece.mock{transition:transform var(--pop-dur,.4s) var(--pop-ease,var(--ease-out)),filter var(--pop-dur,.4s) var(--pop-ease,var(--ease-out)),opacity .3s}
+
+/* Retouch (22 Nov): the retouched photo, with the original over it, hidden. The original fades in under the mouse, as in
+   Kris's Figma prototype (Dissolve, 0.4 s, ease-out), or while a finger rests on the photo (next.js adds .is-before).
+   "Before" sits in the corner meanwhile, the same size however big the photo is. */
+.piece.rt{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.piece.rt .rt-before{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .4s var(--ease-out)}
+.rt-tag{position:absolute;top:calc(8px / var(--s,1));left:calc(8px / var(--s,1));padding:3px 8px;border-radius:999px;background:rgb(0 0 0 / .62);color:#fff;font:var(--label);letter-spacing:var(--label-ls);text-transform:uppercase;opacity:0;transform-origin:0 0;scale:calc(1 / var(--s,1));transition:opacity .4s var(--ease-out);pointer-events:none}
+@media (hover:hover){.piece.rt:hover :is(.rt-before,.rt-tag){opacity:1}}
+.piece.rt.is-before :is(.rt-before,.rt-tag){opacity:1}
+/* Locked (22 Nov): client work, so the site only holds the photos encrypted. Until they're unlocked the frames are
+   empty, and the column says "Shown on request" with a password field instead of the dots and lines (next.js). */
+#retouch.is-locked .p-body>.dots,#retouch.is-locked .p-body>.steps,#retouch.is-locked .rt-hint,#retouch:not(.is-locked) .rt-lock{display:none}
+#retouch.is-locked .collage .piece{background:var(--wire);box-shadow:none}
+.rt-lock{flex:none;display:flex;flex-direction:column;gap:10px;max-width:24rem;margin:0}
+.rt-lock-text{margin:0;color:var(--ink-2)}
+.rt-lock-row{display:flex;flex-wrap:wrap;gap:8px}
+.rt-lock input{flex:1 1 10rem;min-width:0;min-height:44px;padding:8px 16px;border:1.5px solid var(--ink-3);border-radius:99px;background:transparent;color:var(--ink);font:inherit;font-size:1rem}
+.rt-lock input:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+/* Ask for access (Kris, 25 Nov): the main action for visitors, so it's filled; the password row under it is Kris's own
+   way in. A plain email link did nothing on computers with no email app set up (Kris's own), so it opens a choice:
+   Gmail or Outlook in the browser, the email app, or copying the address. The email is written already. */
+/* Ask for access (Retouch) and Contact me (About): one solid main button that opens the ways to write (Gmail,
+   Outlook, the email app, or copying the address). Every secondary button (these ways, Unlock, Download CV) is one
+   outlined pill: a grey stroke and the text colour (Kris, 25 Nov: "keep everything consistent"). */
+.ask{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;min-height:44px;padding:8px 18px;border:1.5px solid var(--ink);border-radius:99px;background:var(--ink);color:var(--on-ink);font:inherit;font-size:.95rem;font-weight:600;cursor:pointer}
+.ask:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.ways{display:flex;flex-direction:column;gap:8px}
+.ways[hidden]{display:none}
+.ways-msg{margin:0;font-size:.9rem;color:var(--ink-3)}
+.ways-msg:empty{display:none}
+.ways-k{margin:0;font:var(--label);letter-spacing:var(--label-ls);text-transform:uppercase;color:var(--ink-3)}
+.ways-row{display:flex;flex-wrap:wrap;gap:8px}
+/* The same type and padding as the solid ones (Kris, 25 Nov: "could you centre the buttons better?"): at .9rem next to
+   Contact me's .95rem, the two labels sat on different lines, Download CV's higher. Now every pill's label shares one
+   baseline, its capitals in the pill's middle. */
+.way{display:inline-flex;align-items:center;min-height:44px;padding:8px 18px;border:1.5px solid var(--ink-3);border-radius:99px;background:none;color:var(--ink);font:inherit;font-size:.95rem;font-weight:600;text-decoration:none;cursor:pointer;transition:background-color .2s}
+@media (hover:hover){.way:hover{background:var(--wire)}}
+.way:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.rt-lock-msg{min-height:1.4em;margin:0;font-size:.9rem;color:var(--ink-3)}
+.rt-lock-msg.is-bad{color:var(--red)}
+.rt-hint{flex:none;margin:0 0 4px}
+/* The reveal (next.js): the original at once, then a slower dissolve into the retouched photo. No tag meanwhile. */
+.piece.rt.rt-orig .rt-before{opacity:1;transition:none}
+.piece.rt.rt-fade .rt-before{transition:opacity 1.2s ease-in-out}
+@media (max-width:699px){.piece.rt:not(.is-big) .rt-tag{display:none}}  /* phones: too big for the small photos; it shows once a photo is enlarged */
+.piece.cutout{background:none;box-shadow:none;border-radius:0;filter:drop-shadow(var(--logo-shadow))}
+.piece.cutout.is-on{box-shadow:none;filter:drop-shadow(var(--logo-shadow-pop))}
+/* Click to enlarge (Kris, 13 Nov): the piece straightens and grows in place, kept inside the collage, so screens are readable
+   while the rest of the collage stays visible. main.js works out --tx/--ty/--s; posters keep their full-screen big view. */
+.project[data-story] .piece[data-step]{cursor:zoom-in}
+.project[data-story] .piece.is-big{transform:translate(var(--tx,0px),var(--ty,0px)) scale(var(--s,1));z-index:20;box-shadow:var(--pop);cursor:zoom-out}
+/* A cut-out logo gets a card while it's big (Kris, 18 Nov), so it doesn't sit on top of the logos underneath.
+   The card is drawn behind the logo and grows with it; the sizes are divided by the zoom (--s) so the padding (14px),
+   corners and shadow look the same at any size. No stroke (Kris, 18 Nov). */
+.project[data-story] .piece.cutout::before{content:"";position:absolute;z-index:-1;inset:calc(-14px / var(--s,1));border-radius:calc(16px / var(--s,1));
+  background:var(--card);
+  box-shadow:0 calc(4px / var(--s,1)) calc(10px / var(--s,1)) rgb(0 0 0 / .14),0 calc(22px / var(--s,1)) calc(48px / var(--s,1)) rgb(0 0 0 / .3);
+  opacity:0;transition:opacity .3s var(--ease-out)}
+.project[data-story] .piece.cutout.is-big{box-shadow:none;filter:none}
+.project[data-story] .piece.cutout.is-big::before{opacity:1}
+/* Hover (or keyboard focus): the logo lifts on its card like a poster does, so it doesn't sit on the logos underneath. */
+@media (hover:hover){
+  .collage .piece.cutout:hover{box-shadow:none}
+  .project[data-story] .piece.cutout:hover{filter:none}
+  .project[data-story] .piece.cutout:hover::before{opacity:1}
+}
+.project[data-story] .piece.cutout:focus-visible{filter:none}
+.project[data-story] .piece.cutout:focus-visible::before{opacity:1}
+
+
+/* about */
+.end{display:flex;align-items:center;padding-block:96px}
+.end .in{display:flex;flex-direction:column;gap:14px}
+.end-title{font-size:clamp(2.4rem,5vw,4.5rem);font-weight:700;letter-spacing:-.04em;line-height:.95}
+.about-tools{margin:0;font-weight:600}
+/* Kris's photo between About and the name (25 Nov). A round cut-out with see-through corners, so it sits on either mode. */
+.about-photo{display:block;width:112px;height:112px;margin:4px 0 2px}
+.about-cta{display:flex;flex-direction:column;gap:12px}
+.ask-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px}  /* 8, as in the other rows of pills: at 10 the two wrapped in a 1280-wide window */
+.about-tools>span{font:var(--label);letter-spacing:var(--label-ls);text-transform:uppercase;color:var(--ink-3);margin-right:8px}
+/* The programs as logos (Kris, 19 Nov), each 26px tall; pointing at one shows its name. */
+.about-tools{display:flex;flex-wrap:wrap;align-items:center;gap:10px 6px}
+.tools{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin:0;padding:0;list-style:none}
+.tools li{position:relative;display:flex}
+.tools img{display:block;width:auto;height:26px}
+.tools li::after{content:attr(data-label);position:absolute;left:50%;bottom:calc(100% + 6px);transform:translateX(-50%);background:var(--ink);color:var(--on-ink);
+  font-size:.8rem;font-weight:600;padding:4px 9px;border-radius:7px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s;z-index:10}
+.tools li:hover::after{opacity:1}
+
+
+/* ---------- The project bar (Kris's sketch, 15 Nov). main.js builds it from each section's head and data-group. ----------
+   Groups as in the sketch: About, Applications and UI/UX, Graphic design and illustrations, Extras.
+   Phones and narrow windows: a slim bar along the bottom, where the thumb is, over the stacked projects. Swipe it sideways;
+   the project you're in is filled in and shows the start of its text; a tap scrolls there. */
+:root{--card-h:100px;--rg-dur:450ms}  /* laptop card height and how fast the cards grow; ?tune changes them live */
+.rail{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;align-items:flex-end;gap:14px;overflow-x:auto;scrollbar-width:none;
+  padding:6px max(16px,env(safe-area-inset-right,0px)) max(8px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  background:color-mix(in srgb,var(--paper) 90%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--line)}
+.rail::-webkit-scrollbar{display:none}
+.rg{flex:none;display:flex;flex-direction:column;gap:2px;min-width:0}
+.rg-k{font:var(--label-s);letter-spacing:var(--label-ls);text-transform:uppercase;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:12px}
+.rg-row{display:flex;gap:4px}
+/* Phones: a group's title stays at the bar's left edge while its cards are in view, and the next group's title pushes it
+   out (Kris, 25 Nov: going back from Silver Bliss to Interaction Stamp, "Applications and UI/UX" had scrolled away).
+   The laptop bar keeps its titles in place, underlined across the group (below). */
+.rg-k{position:sticky;left:0;align-self:flex-start;max-width:100%}  /* 0: a sticky offset counts from inside the bar's padding */
+.rail-card{position:relative;flex:none;display:inline-flex;align-items:center;gap:8px;min-height:40px;max-width:min(64vw,320px);padding:0 14px;border-radius:99px;
+  color:inherit;text-decoration:none;font-weight:600;font-size:.92rem;white-space:nowrap;transition:background-color .2s,color .2s}
+.rc-title{flex:none}
+.rc-desc{display:none}
+.rail-card.is-current{background:var(--ink);color:var(--on-ink)}
+.rail-card.is-current .rc-desc{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;font-weight:400;font-size:.8rem;opacity:.75}
+main{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}  /* room for the bar */
+.project,.end{scroll-margin-top:0}
+
+/* Laptops (next.js adds .is-app at 900 x 560 and up). TEST LAYOUT 2 (Kris, 19 Nov): one project at a time, and the bar
+   along the bottom exactly as on the site. A column on the left lists every problem and decision of the project at once
+   (no dots, no self-playing tour), with the project's button at the top; the list scrolls inside the column when it's
+   longer than the screen, with a soft fade at the bottom while there's more. The pictures get everything to the right.
+   --pad-x, --col-w and --col-gap come from next.js (the same sums as the fallbacks here). */
+:root{--pad-x:clamp(16px,2.5vw,40px);--pad-top:clamp(14px,3vh,32px);--pad-bottom:clamp(6px,1.2vh,12px)}
+.is-app body{overflow:hidden}
+.is-app main{display:grid;grid-template-rows:minmax(0,1fr) auto;grid-template-columns:minmax(0,1fr);height:100vh;height:100svh;padding:0;overflow:clip;position:relative}  /* clip: the pictures slide in from beyond the edge */
+.is-app #projects{display:contents}
+.is-app .intro,.is-app .p-head{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}  /* still read out; shown in the bar */
+.is-app .project,.is-app .end{grid-area:1/1;display:none;min-height:0;padding:var(--pad-top) var(--pad-x) var(--pad-bottom);border:0}
+/* .is-leaving: the project sliding out while the next one slides in (next.js). relative: the column and the map sit in it. */
+.is-app .project.is-shown,.is-app .project.is-leaving,.is-app .end.is-shown,.is-app .end.is-leaving{display:block;container-type:size;position:relative}
+.is-app .project.is-measure{display:block;visibility:hidden;container-type:size}
+/* The pictures: right of the column, in a 2:1 box as wide as that room allows and no taller than the screen's room, at
+   the top. Each piece's laptop place is --dx/--dy/--dw (unchanged from the site). */
+.is-app .project .in{display:grid;grid-template-columns:var(--col-w,clamp(280px,24vw,380px)) minmax(0,1fr);column-gap:var(--col-gap,clamp(24px,3vw,56px));
+  width:100%;height:100cqh;max-width:none;margin:0}
+.is-app .collage{grid-column:2;grid-row:1;align-self:start;justify-self:center;position:relative;flex:none;width:min(100%,calc(100cqh * 2));aspect-ratio:2/1;margin:0}
+.is-app .collage .piece{left:var(--dx,var(--x));top:var(--dy,var(--y));width:var(--dw,var(--w));transition:transform var(--pop-dur,.4s) var(--pop-ease,var(--ease-out)),box-shadow var(--pop-dur,.4s) var(--pop-ease,var(--ease-out)),opacity .3s}
+/* The column: every step, then any note, from the top (Kris, 19 Nov: tried at the bottom, the top reads better). The
+   project's button sits under the pictures (below). */
+.is-app .p-body{position:absolute;z-index:7;left:var(--pad-x);top:var(--pad-top);bottom:var(--pad-bottom);width:var(--col-w,clamp(280px,24vw,380px));margin:0;
+  display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:16px}
+.is-app .p-body>.dots{display:none}
+.is-app .p-body>.p-note{flex:none;text-align:left;max-width:none;margin:0}
+/* The project's button (Kris, 19 Nov: "move this button over here"): just under the pictures, at their left edge. It
+   still belongs to the column (it dissolves with the text); it's only placed there. The sums are the picture box's:
+   it's as wide as the room right of the column allows (--area) but no more than twice the screen's room high, centred
+   in that room, at the top. If there's no room under the pictures (a very wide screen), it sits at the bottom. */
+.is-app .p-body{--area:calc(100cqw - var(--col-w,clamp(280px,24vw,380px)) - var(--col-gap,clamp(24px,3vw,56px)));--box:min(var(--area),100cqh * 2)}
+.is-app .p-body>.p-link,.is-app .p-body>.sb-cam,.is-app .p-body>.sb-cam-note{position:absolute;width:max-content;
+  left:calc(100cqw - var(--area) + (var(--area) - var(--box)) / 2);top:min(calc(var(--box) / 2 + 20px),calc(100cqh - 49px))}
+/* The buttons are 11% bigger than the site's (Kris, 19 Nov; tried centred under Silver Bliss's logo, the left edge was better). */
+.is-app .p-body>.p-link,.is-app .p-body>.sb-cam{min-height:calc(44px * 1.11);padding:calc(8px * 1.11) calc(18px * 1.11);gap:calc(8px * 1.11);font-size:calc(.9rem * 1.11)}
+.is-app .p-body>.sb-cam-note{top:min(calc(var(--box) / 2 + 80px),calc(100cqh - 20px));margin:0;width:42ch;max-width:none;text-align:left}
+/* The pictures in tidy rows (Kris, 19 Nov: "position them so they dont overlap and arent rotated but aligned"). next.js
+   packs each project's pictures and sizes the block (--tb-w, --tb-h); --gx/--gy/--gw place each one in it (--mx/--my/--mw
+   in the About map's copies). The button follows the block's left edge and bottom. --tb-y moves block and button down so
+   they sit in the middle of the height (20 Nov). ?scatter in the address (or the tune panel) shows the photos on the
+   table again, to compare. */
+.is-app:not(.scatter) .project .collage{width:var(--tb-w,min(100%,calc(100cqh * 2)));height:var(--tb-h,auto);margin-top:var(--tb-y,0px)}
+.is-app:not(.scatter) .project .collage .piece{left:var(--gx,var(--dx));top:var(--gy,var(--dy));width:var(--gw,var(--dw));--r:0deg!important}
+.is-app:not(.scatter) .map-mini .piece{left:var(--mx,var(--dx));top:var(--my,var(--dy));width:var(--mw,var(--dw));--r:0deg!important}
+.is-app:not(.scatter) .p-body>.p-link,.is-app:not(.scatter) .p-body>.sb-cam,.is-app:not(.scatter) .p-body>.sb-cam-note{left:calc(100cqw - var(--area) + (var(--area) - var(--tb-w,var(--box))) / 2)}
+.is-app:not(.scatter) .p-body>.p-link,.is-app:not(.scatter) .p-body>.sb-cam{top:min(calc(var(--tb-y,0px) + var(--tb-h,var(--box) / 2) + 20px),calc(100cqh - 49px))}
+.is-app:not(.scatter) .p-body>.sb-cam-note{top:min(calc(var(--tb-y,0px) + var(--tb-h,var(--box) / 2) + 80px),calc(100cqh - 20px))}
+/* Square corners on the pictures and the bar's cards (Kris, 19 Nov). The buttons stay round. */
+.is-app .piece,.is-app .ph-box,.is-app .map-tile,.is-app .map-pic,.is-app .project[data-story] .piece.cutout::before{border-radius:0}
+/* A frame whose picture is still on its way (next.js, loading; 20 Nov): a soft tint, then the picture fades in. */
+.is-app .piece>img,.is-app .piece>picture>img{transition:opacity .3s}
+.is-app .piece.is-wait:not(.cutout){background:var(--wire)}
+.is-app .piece.is-wait>img,.is-app .piece.is-wait>picture>img{opacity:0}  /* the bar's cards: in their own rule below */
+.is-app .steps{position:relative;flex:0 1 auto;min-height:0;width:100%;max-width:none;display:flex;flex-direction:column;overflow-y:auto;scrollbar-width:none;
+  font-size:.9rem;line-height:1.5}
+.is-app .steps::-webkit-scrollbar{display:none}  /* no scrollbar (Kris, 19 Nov): the list still scrolls with the wheel, and the fades show there's more */
+.is-app .steps.is-more{-webkit-mask-image:linear-gradient(#000 calc(100% - 56px),transparent);mask-image:linear-gradient(#000 calc(100% - 56px),transparent)}  /* more below */
+.is-app .steps.is-up{-webkit-mask-image:linear-gradient(transparent,#000 40px);mask-image:linear-gradient(transparent,#000 40px)}  /* scrolled: the top edge fades too */
+.is-app .steps.is-up.is-more{-webkit-mask-image:linear-gradient(transparent,#000 40px,#000 calc(100% - 56px),transparent);mask-image:linear-gradient(transparent,#000 40px,#000 calc(100% - 56px),transparent)}
+.is-app .step{display:flex;flex-direction:column;gap:6px;opacity:1;visibility:visible;transition:opacity .25s}
+.is-app .step+.step{margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}
+.is-app .step>p{margin:0}
+.is-app .p-note,.is-app .sb-cam-note,.is-app .p-link,.is-app .sb-cam{font-size:.9rem}
+/* Pointing at a paragraph pops its pictures; pointing at a picture lights its paragraph (if it's in view). The other
+   paragraphs step back. */
+.is-app .steps:has(.is-lit) .step:not(.is-lit){opacity:.4}
+.is-app .piece.is-lit{--s:var(--pop-scale);z-index:5;box-shadow:var(--pop)}
+.is-app .project[data-story] .piece.cutout.is-lit{box-shadow:none;filter:none}
+.is-app .project[data-story] .piece.cutout.is-lit::before{opacity:1}
+
+/* About: its text in the same column, and a small map of every project where the pictures go (Kris, 19 Nov). Each tile
+   is a still, shrunken copy of that project's pictures (next.js). */
+.is-app .end .in{position:absolute;z-index:7;left:var(--pad-x);top:var(--pad-top);bottom:var(--pad-bottom);width:var(--col-w,clamp(280px,24vw,380px));max-width:none;margin:0;
+  display:flex;flex-direction:column;gap:12px;overflow-y:auto}
+/* The column scrolls, so it would cut off Contact me as it grows on hover, and the focus rings: 8px of room each side
+   (and under it), with the text where it was. */
+.is-app .end .in{left:calc(var(--pad-x) - 8px);width:calc(var(--col-w,clamp(280px,24vw,380px)) + 16px);padding:0 8px 8px}
+.is-app .end-title{font-size:clamp(1.9rem,2.6vw,2.8rem)}
+.is-app .end .p-desc{font-size:.9rem;line-height:1.5}
+
+.map{display:none}
+.is-app .map{display:grid;position:absolute;top:var(--pad-top);bottom:var(--pad-bottom);right:var(--pad-x);
+  left:calc(var(--pad-x) + var(--col-w,clamp(280px,24vw,380px)) + var(--col-gap,clamp(24px,3vw,56px)));
+  grid-template-columns:repeat(4,minmax(0,1fr));align-content:start;gap:12px 18px;overflow-y:auto;scrollbar-width:thin}
+.map-k{grid-column:1/-1;margin:6px 0 0;padding-top:6px;border-top:1px solid var(--line);font:var(--label-s);letter-spacing:var(--label-ls);text-transform:uppercase;color:var(--ink-3)}
+.map-k:first-child{margin-top:0}
+.map-tile{display:flex;flex-direction:column;gap:6px;color:inherit;text-decoration:none;border-radius:12px}
+.map-pic{position:relative;display:block;aspect-ratio:2/1;overflow:hidden;border-radius:10px;background:var(--wire);transition:transform .3s var(--ease-out),box-shadow .3s var(--ease-out)}
+.map-mini{position:absolute;left:0;top:0;width:1000px;height:500px;transform:scale(var(--k,.25));transform-origin:0 0;pointer-events:none}
+.map-mini .collage{width:100%;height:100%;aspect-ratio:auto;margin:0}
+.map-name{font-weight:700;font-size:.85rem;line-height:1.2;letter-spacing:-.01em}
+@media (hover:hover){.map-tile:hover .map-pic{transform:scale(1.04);box-shadow:var(--shadow)}}
+.map-tile:focus-visible{outline-offset:4px}
+
+/* Bigger pictures on laptops (Kris, 19 Nov: "fullscreen", with the text on the side): a click grows a piece to fill the
+   picture area, the rest dims, and the column scrolls to that piece's paragraph and lights it. Posters too (their sharper
+   copies load), instead of the dark big view; phones keep that. Logos stop at about half the area, on their card. */
+.is-app .collage:has(.is-big) .piece:not(.is-big){opacity:.12;pointer-events:none;--s:1;box-shadow:none}
+
+/* The bar on laptops: groups of cards sized like a recursive grid (the reference video). main.js shares the width out and
+   gives each card its width (--cw: wider when it's the current project or the mouse rests on it; each group is as wide as
+   its cards) and its text's final width (--tw), so words don't re-wrap while a card grows: its edge just reveals or covers
+   them. On a narrow laptop window no card goes under 90px and the bar scrolls sideways instead. */
+.is-app .rail{grid-area:2/1;position:static;align-items:stretch;gap:12px;overflow:auto hidden;
+  padding:8px clamp(16px,2.5vw,40px) clamp(10px,1.6vh,16px);background:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+.is-app .rg{gap:6px}
+.is-app .rg-k{position:static;align-self:stretch;max-width:none;contain:inline-size;padding:0 0 5px 2px;border-bottom:1px solid var(--line);font-size:.6rem}
+.is-app .rg-row{gap:6px}
+.is-app .rail-card{width:var(--cw,100px);min-width:0;max-width:none;height:var(--card-h);flex-direction:column;align-items:flex-start;gap:4px;
+  padding:9px 10px;border-radius:0;overflow:hidden;white-space:normal;font-weight:400;background:var(--wire);
+  transition:width var(--rg-dur) var(--rg-ease,var(--ease-out)),background-color .2s,color .2s}
+.is-app.is-loading .rail-card{transition:none}  /* the first sizes come at once, not grown into (next.js, loading) */
+.is-app .rc-title{width:var(--tw,auto);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;
+  font-weight:700;font-size:.9rem;line-height:1.15;letter-spacing:-.02em;-webkit-hyphens:auto;hyphens:auto}
+.is-app .rc-desc{display:block;flex:1 1 0;min-height:0;width:var(--tw,auto);overflow:hidden;font-size:.72rem;line-height:1.35;color:var(--ink-2);
+  -webkit-mask-image:linear-gradient(#000 calc(100% - 14px),transparent);mask-image:linear-gradient(#000 calc(100% - 14px),transparent)}  /* text that doesn't fit fades out */
+.is-app .rail-card.is-current{background:var(--ink);color:var(--on-ink)}
+.is-app .rail-card.is-current .rc-desc{display:block;color:inherit;opacity:.78;-webkit-mask-image:none;mask-image:none}  /* main.js makes it wide enough for all of it */
+@media (hover:hover){.is-app .rail-card:not(.is-current):hover{background:var(--line)}}
+.is-app .rail-card:focus-visible{outline-offset:-3px}
+
+
+/* Laptops: one row of dots for every project (main.js, "one row of dots"; Kris, 15 Nov), styled on the dots in Kris's
+   blend prototype: a light capsule, the current dot biggest (red, the site's active colour), the others smaller with
+   distance. The row holds still (Kris, 18 Nov): it starts at the text's left edge (--sd-left) and dots never move,
+   only grow or shrink. Each dot is an 18 x 44px button so the row tiles without gaps; --x is its place, --s its size;
+   the capsule (--cw: its width) only grows or shrinks at its right end. */
+.sdots{display:none}
+.is-app .sdots{display:block;position:absolute;z-index:6;left:var(--sd-left,50%);top:var(--sd-top,-100px);width:0;height:44px}
+.is-app .sdots::before{content:"";position:absolute;top:8px;bottom:8px;left:-13px;width:var(--cw,26px);border-radius:99px;background:color-mix(in srgb,var(--ink) 9%,transparent);
+  transition:width .35s var(--ease-out),opacity .3s}
+.is-app .sdots.is-empty::before{opacity:0}
+.sdot{position:absolute;left:0;top:0;width:18px;height:44px;margin-left:-9px;padding:0;border:0;background:none;cursor:pointer;
+  transform:translateX(var(--x,0px));transition:transform .35s var(--ease-out)}
+.sdot.no-move{transition:none}
+.sdot:disabled{pointer-events:none}
+.sdot i{position:absolute;left:50%;top:50%;width:var(--s,0px);height:var(--s,0px);border-radius:50%;background:var(--ink-3);transform:translate(-50%,-50%);
+  transition:width .35s var(--ease-out),height .35s var(--ease-out),background-color .25s}
+.sdot.is-active i{background:var(--red)}
+.sdot .tip{position:absolute;left:50%;bottom:calc(100% - 4px);transform:translateX(-50%);background:var(--ink);color:var(--on-ink);font-size:.8rem;font-weight:600;
+  padding:4px 9px;border-radius:7px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s}
+.sdot:focus-visible{outline:none}
+.sdot:focus-visible i{outline:2px solid var(--red);outline-offset:3px}
+.sdot:focus-visible .tip{opacity:1}
+@media (hover:hover){.sdot:not(.is-active):hover .tip{opacity:1}.sdot:not(.is-active):hover i{background:var(--ink-2)}}
+
+/* Test layout 2: no dots on laptops (every step is listed in the column). */
+html.is-app .sdots{display:none}
+
+/* ---------- laptop without the script: one project per screen, snapping (decision 6A, the first layout) ---------- */
+@media (min-width:900px) and (min-height:620px){
+  html:not(.is-app){scroll-snap-type:y mandatory}
+  html:not(.is-app) .snap{scroll-snap-align:start}
+  html:not(.is-app) .project,html:not(.is-app) .end{min-height:100svh}
+  html:not(.is-app) .project{display:grid}
+}
+
+/* ---------- phones and narrow windows: stack, scroll freely ---------- */
+@media (max-width:899px){
+  .intro{min-height:0;padding-top:max(88px,env(safe-area-inset-top,0px))}
+  .project{padding-block:64px;border-top:1px solid var(--line)}
+  .project .in{grid-template-columns:minmax(0,1fr);grid-template-areas:"head" "collage" "body";grid-template-rows:auto}
+  .collage{width:100%;max-width:560px;margin-top:28px;justify-self:start}
+  .end{padding-block:72px;border-top:1px solid var(--line)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition:none!important}
+  .poster-anim .pa,.viewer-art{animation:none!important}
+  html{scroll-behavior:auto}
+}
