@@ -20,7 +20,10 @@
   --label-ls:.09em;
   --ease-out:cubic-bezier(.2,.8,.2,1);
   --pop-scale:1.1;  /* how much every card in a collage grows when it pops (hover, focus, the current step); ?tune tries it live */
-  color-scheme:light;
+  /* light dark, like the meta in index.html: the site has its own dark design (below, with light logos), so a browser that
+     darkens pages itself should use it. On a Samsung (25 Nov) the page was darkened by the browser while the light
+     design's dark logos stayed, and vanished. */
+  color-scheme:light dark;
 }
 @media (prefers-color-scheme:dark){:root{
   --paper:#141517; --card:#1c1d20; --ink:#ebeae5; --ink-2:#a8a9ad; --ink-3:#76787d;
