@@ -650,7 +650,9 @@
       if (!m) throw new Error('missing');
       if (new TextDecoder().decode(await open(key, unb64(m.check))) !== 'retouch-ok') throw new Error('bad');
       const imgs = [...document.querySelectorAll('img[data-lock]')], names = [...new Set(imgs.map(i => i.dataset.lock))];
-      const file = async name => URL.createObjectURL(new Blob([await open(key, await (await fetch(dir + name + '.bin')).arrayBuffer())], { type: 'image/webp' }));
+      // no-cache: after a new lock, a browser could pair the new key with photos it kept from the old one (up to 10 min
+      // on GitHub Pages), and the right password said it didn't work (25 Nov). It asks the server each time instead.
+      const file = async name => URL.createObjectURL(new Blob([await open(key, await (await fetch(dir + name + '.bin', { cache: 'no-cache' })).arrayBuffer())], { type: 'image/webp' }));
       const urls = await Promise.all(names.map(file));
       names.forEach((name, k) => imgs.filter(i => i.dataset.lock === name).forEach(i => { i.src = urls[k]; }));
       try { sessionStorage.setItem('rt-key', b64(await subtle.exportKey('raw', key))); } catch (e) {}
