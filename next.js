@@ -521,14 +521,9 @@
     const frame = pv.querySelector('.pv-frame'), screen = pv.querySelector('.pv-screen');
     const laptop = matchMedia('(hover: hover) and (pointer: fine) and (min-width: 900px)');
     const fit = () => { frame.style.transform = `scale(${screen.clientHeight / 932})`; };  // the 932-point screen's scale; the app is 430 x 839 of it
-    // blend keeps room for a scrollbar (scrollbar-gutter: stable), which a desktop browser with classic scrollbars shows
-    // as a strip down the screen's right edge, unlike a phone. The app is made that much wider, so the strip falls just
-    // outside the screen and the app itself is still 430 wide. (0 where scrollbars float over the page, as on most Macs.)
-    const probe = document.createElement('div');
-    probe.style.cssText = 'position:absolute;top:-9999px;width:100px;height:100px;overflow:scroll';
-    document.body.append(probe);
-    frame.style.width = 430 + probe.offsetWidth - probe.clientWidth + 'px';
-    probe.remove();
+    // No scrollbar strip down the screen's right edge: blend hides its scrollbars (and the room kept for one) when it
+    // runs inside another page (its html.is-embedded, 25 Nov). Measuring this page's scrollbar to make the app wider
+    // didn't work: in Kris's Chrome it measured 0 while blend still kept the room.
     blendLink.addEventListener('click', e => {
       if (!laptop.matches || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || e.button !== 0) return;
       e.preventDefault();

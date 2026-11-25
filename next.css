@@ -219,7 +219,7 @@ button.piece{cursor:pointer}
   background:linear-gradient(#3a3b3f 0 calc(var(--u) * 34),transparent 0 calc(var(--u) * 74),#3a3b3f 0 calc(var(--u) * 140),transparent 0 calc(var(--u) * 172),#3a3b3f 0)}
 .pv-phone::after{right:calc(var(--u) * -3);top:calc(var(--u) * 262);height:calc(var(--u) * 104);border-radius:0 calc(var(--u) * 2) calc(var(--u) * 2) 0;background:#3a3b3f}
 .pv-bezel{height:100%;padding:calc(var(--u) * 12);border-radius:calc(var(--u) * 67);background:#050506;box-shadow:inset 0 0 0 1px #17171a}
-.pv-screen{position:relative;height:100%;border-radius:calc(var(--u) * 55);overflow:hidden;background:#f4efee;isolation:isolate}
+.pv-screen{position:relative;height:100%;border-radius:calc(var(--u) * 55);overflow:hidden;background:linear-gradient(#000 0 calc(var(--u) * 59),#f4efee 0);isolation:isolate}  /* black behind the status bar: a light screen showed through its rounded edge as a thin line round the top corners (Kris, 25 Nov) */
 .pv-island{position:absolute;top:calc(var(--u) * 11);left:50%;width:calc(var(--u) * 126);height:calc(var(--u) * 37);transform:translateX(-50%);border-radius:999px;background:#000;pointer-events:none}
 /* As on the phone, blend's home-screen app (Kris, 25 Nov: "the ratio isnt right", with a screenshot from the phone):
    the black status bar (59 points, the island inside it) is above the app, not over it, and the app keeps the
