@@ -175,6 +175,13 @@ button.piece{cursor:pointer}
    !important to undo, as on laptops. */
 .collage.is-tidy{aspect-ratio:auto;height:var(--ph)}
 .collage.is-tidy .piece{left:var(--px);top:var(--py);width:var(--pw);--r:0deg!important}
+/* The current picture (Kris, 25 Nov: "i dont think the gaps between those frames are equal"): growing 10% swallowed the
+   10 px gaps round it, so in the rows it keeps its size and gets a ring in the gap instead (2 px, 2 px out, so two rings
+   side by side still leave 2 px), in the ink colour, like the current chip. Its shadow stays the resting one. Laptops
+   still grow. */
+.collage.is-tidy .piece{outline:2px solid transparent;outline-offset:2px;transition:transform var(--pop-dur,.4s) var(--pop-ease,var(--ease-out)),box-shadow var(--pop-dur,.4s) var(--pop-ease,var(--ease-out)),filter var(--pop-dur,.4s) var(--pop-ease,var(--ease-out)),outline-color .25s}
+.collage.is-tidy .piece.is-on:not(.is-big){--s:1;outline-color:var(--ink)}
+.collage.is-tidy .piece.is-on:not(.is-big):not(.cutout):not(.mock){box-shadow:var(--shadow)}
 .piece img{display:block;width:100%;height:auto;border-radius:inherit}
 .piece.ph-piece{height:var(--h);display:grid;place-items:center;text-align:center;padding:10px;border:1.5px dashed var(--ink-3);background:var(--card);box-shadow:none;font:var(--label);letter-spacing:var(--label-ls);color:var(--ink-3)}
 .piece.ph-piece.is-on{box-shadow:var(--pop);color:var(--ink)}
@@ -330,6 +337,23 @@ html:has(.viewer[open]),html:has(.pv[open]){overflow:hidden;padding-right:var(--
    empty, and the column says "Shown on request" with a password field instead of the dots and lines (next.js). */
 #retouch.is-locked .p-body>.dots,#retouch.is-locked .p-body>.steps,#retouch.is-locked .rt-hint,#retouch:not(.is-locked) .rt-lock{display:none}
 #retouch.is-locked .collage .piece{background:var(--wire);box-shadow:none}
+/* The card over the empty frames (Kris, 25 Nov: people didn't see the photos, so they missed the "Shown on request"
+   card under them). It stays in the column's markup (the About map copies the collage), and is only placed over the
+   frames: on phones the column steps aside (display: contents) so the card can take the frames' grid area; on laptops
+   it's centred on the picture block (--tb-*, the sums the project button uses). The frames dim behind it and the tour
+   doesn't mark them. Unlocked, all of this goes. */
+#retouch.is-locked .collage .piece{opacity:.55}
+#retouch.is-locked .collage .piece.is-on{--s:1;outline-color:transparent;box-shadow:none}
+#retouch.is-locked .rt-lock{z-index:8;width:min(24rem,calc(100% - 32px));max-width:none;padding:20px;border:1px solid var(--line);border-radius:18px;background:var(--card);box-shadow:var(--pop)}
+:root:not(.is-app) #retouch.is-locked .p-body{display:contents}
+:root:not(.is-app) #retouch.is-locked .rt-lock{grid-area:collage;align-self:center;justify-self:center;position:relative}
+.is-app #retouch.is-locked .rt-lock{position:absolute;left:calc(100cqw - var(--area) + (var(--area) - var(--tb-w,var(--box))) / 2 + var(--tb-w,var(--box)) / 2);
+  top:calc(var(--tb-y,0px) + var(--tb-h,var(--box) / 2) / 2);transform:translate(-50%,-50%);width:min(24rem,calc(var(--tb-w,var(--box)) - 48px))}
+/* Narrow screens: the frames sit at the left, up to 560 wide, 28 down (below); the card is centred on that box. */
+@media (max-width:899px){
+  :root:not(.is-app) #retouch.is-locked .rt-lock{margin-top:28px;justify-self:start;width:min(24rem,calc(min(100%,560px) - 32px));
+    margin-left:calc((min(100%,560px) - min(24rem,calc(min(100%,560px) - 32px))) / 2)}
+}
 .rt-lock{flex:none;display:flex;flex-direction:column;gap:10px;max-width:24rem;margin:0}
 .rt-lock-text{margin:0;color:var(--ink-2)}
 .rt-lock-row{display:flex;flex-wrap:wrap;gap:8px}
@@ -357,6 +381,7 @@ html:has(.viewer[open]),html:has(.pv[open]){overflow:hidden;padding-right:var(--
 .way:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .rt-lock-msg{min-height:1.4em;margin:0;font-size:.9rem;color:var(--ink-3)}
 .rt-lock-msg.is-bad{color:var(--red)}
+.rt-lock-msg:empty{display:none}  /* no blank strip at the bottom of the card until there is something to say */
 .rt-hint{flex:none;margin:0 0 4px}
 /* The reveal (next.js): the original at once, then a slower dissolve into the retouched photo. No tag meanwhile. */
 .piece.rt.rt-orig .rt-before{opacity:1;transition:none}
