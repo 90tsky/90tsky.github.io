@@ -805,12 +805,14 @@
   // button, at the top; next.css sizes the box from --tb-w/--tb-h and places each picture from --gx/--gy/--gw (the
   // About map's copies: --mx/--my/--mw). ?scatter in the address (or the tune panel) puts the photos on the table back.
   if (new URLSearchParams(location.search).has('scatter')) root.classList.add('scatter');
-  function pack(rs, W, H, gap, maxH = H) {
+  // maxRows: at most that many rows (data-app-rows on a collage, laptops: Retouch keeps its two rows, Kris, 25 Nov).
+  function pack(rs, W, H, gap, maxH = H, maxRows = Infinity) {
     const n = rs.length;
     let best = null;
     for (let cut = 0; cut < 1 << (n - 1); cut++) {
       const rows = [[0]];
       for (let i = 1; i < n; i++) { if (cut & 1 << (i - 1)) rows.push([]); rows[rows.length - 1].push(i); }
+      if (rows.length > maxRows) continue;
       // At a block width w, a row is (w - its gaps) / (its pictures' width-to-height ratios added up) tall.
       const sums = rows.map(r => r.reduce((t, i) => t + rs[i], 0));
       let a = 0, b = (rows.length - 1) * gap;
@@ -863,7 +865,8 @@
         s.setProperty(names[1], pct((oy + r.y + h * (1 - c) / 2) / bh));
         s.setProperty(names[2], pct(r.w * c / bw));
       };
-      const L = pack(ks, W, H - room, gap, CFG.picMax * (H - room));
+      const maxRows = +col.dataset.appRows || Infinity;
+      const L = pack(ks, W, H - room, gap, CFG.picMax * (H - room), maxRows);
       if (!L) return;
       sec.style.setProperty('--tb-w', L.w.toFixed(1) + 'px');
       sec.style.setProperty('--tb-h', L.h.toFixed(1) + 'px');
@@ -877,7 +880,7 @@
       // The About map's copy of these pictures: the same rows in its 1000 x 500 tile, centred.
       const mini = document.querySelector(`.map-tile[data-id="${sec.id}"] .map-mini .collage`);
       if (!mini) return;
-      const mp = [...mini.children].filter(p => p.classList.contains('piece')), M = pack(ks, 940, 440, 24, CFG.picMax * 440);
+      const mp = [...mini.children].filter(p => p.classList.contains('piece')), M = pack(ks, 940, 440, 24, CFG.picMax * 440, maxRows);
       if (!M || mp.length !== ps.length) return;
       order.forEach((i, k) => put(mp[i].style, M.rects[k], i, 1000, 500, (1000 - M.w) / 2, (500 - M.h) / 2, ['--mx', '--my', '--mw']));
     });
