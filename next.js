@@ -911,14 +911,34 @@
       const rs = ps.map(shapeOf);
       if (rs.some(r => !(r > 0 && isFinite(r)))) return;
       const order = ps.map((p, i) => i).sort((i, j) => (+ps[i].dataset.step || 0) - (+ps[j].dataset.step || 0) || i - j);
-      const L = pack(order.map(i => rs[i] * (+ps[i].dataset.tidy || 1)), W, W * 1.6, gap, W * .9);
+      // data-phone-h: a lower height for the whole block, in widths (the magazine and the CD share one row, small, and
+      // open full size, Kris, 25 Nov).
+      const L = pack(order.map(i => rs[i] * (+ps[i].dataset.tidy || 1)), W, W * (+col.dataset.phoneH || 1.6), gap, W * .9);
       if (!L) return;
+      // Every picture has a close-up (Kris, 25 Nov: "i would like all the frames to have a close up"). One alone in its
+      // row fills the width, so a tap couldn't enlarge it: it's kept to 75% of the width, centred, and the rows under it
+      // move up. Not posters (they open full size) or close-ups (data-tidy).
+      const rows = new Map();
+      order.forEach((i, k) => { const y = L.rects[k].y.toFixed(1); rows.set(y, [...(rows.get(y) || []), k]); });
+      let shift = 0;
+      rows.forEach(ks => {
+        ks.forEach(k => { L.rects[k].y += shift; });
+        if (ks.length !== 1) return;
+        const k = ks[0], i = order[k], p = ps[i], r = L.rects[k], w = .75 * W;
+        if (!p.dataset.step || p.classList.contains('poster-btn') || p.dataset.tidy || r.w <= w) return;
+        shift -= (r.w - w) / rs[i];
+        r.x += (r.w - w) / 2;
+        r.w = w;
+      });
+      L.h += shift;
       const ox = (W - L.w) / 2;
       order.forEach((i, k) => {
         const r = L.rects[k], c = ps[i].classList.contains('cutout') ? .8 : 1, h = r.w / rs[i], s = ps[i].style;
         s.setProperty('--px', pct((ox + r.x + r.w * (1 - c) / 2) / W));
         s.setProperty('--py', pct((r.y + h * (1 - c) / 2) / L.h));
         s.setProperty('--pw', pct(r.w * c / W));
+        // The current picture grows 3 px each side, whatever its size (next.css: --pop-s), so the gaps stay open.
+        s.setProperty('--pop-s', (1 + 6 / (r.w * c)).toFixed(4));
       });
       col.style.setProperty('--ph', L.h.toFixed(1) + 'px');
       col.classList.add('is-tidy');

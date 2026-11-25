@@ -9,6 +9,9 @@
   --drop:drop-shadow(0 1px 2px rgb(20 20 20 / .08)) drop-shadow(0 12px 32px rgb(20 20 20 / .14));
   --drop-pop:drop-shadow(0 4px 10px rgb(20 20 20 / .12)) drop-shadow(0 30px 64px rgb(20 20 20 / .30));
   --logo-shadow:0 14px 18px rgb(20 20 20 / .24);
+  /* A faint light edge round the light design's dark logos: lost in the light page, but it outlines them when a browser
+     darkens the page itself (Samsung Internet does by default, 25 Nov, and ignores the site's own dark design). */
+  --logo-edge:drop-shadow(0 0 1.5px rgb(255 255 255 / .95));
   --logo-shadow-pop:0 24px 26px rgb(20 20 20 / .32);
   --f-body:"Instrument Sans","Segoe UI",system-ui,-apple-system,sans-serif;
   --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
@@ -33,6 +36,7 @@
   --drop:drop-shadow(0 1px 2px rgb(0 0 0 / .4)) drop-shadow(0 12px 32px rgb(0 0 0 / .5));
   --drop-pop:drop-shadow(0 4px 10px rgb(0 0 0 / .4)) drop-shadow(0 30px 64px rgb(0 0 0 / .7));
   --logo-shadow:0 14px 22px rgb(0 0 0 / .7);
+  --logo-edge:drop-shadow(0 0 0 transparent);
   --logo-shadow-pop:0 24px 30px rgb(0 0 0 / .8);
   color-scheme:dark}}
 
@@ -175,13 +179,11 @@ button.piece{cursor:pointer}
    !important to undo, as on laptops. */
 .collage.is-tidy{aspect-ratio:auto;height:var(--ph)}
 .collage.is-tidy .piece{left:var(--px);top:var(--py);width:var(--pw);--r:0deg!important}
-/* The current picture (Kris, 25 Nov: "i dont think the gaps between those frames are equal"): growing 10% swallowed the
-   10 px gaps round it, so in the rows it keeps its size and gets a ring in the gap instead (2 px, 2 px out, so two rings
-   side by side still leave 2 px), in the ink colour, like the current chip. Its shadow stays the resting one. Laptops
-   still grow. */
-.collage.is-tidy .piece{outline:2px solid transparent;outline-offset:2px;transition:transform var(--pop-dur,.4s) var(--pop-ease,var(--ease-out)),box-shadow var(--pop-dur,.4s) var(--pop-ease,var(--ease-out)),filter var(--pop-dur,.4s) var(--pop-ease,var(--ease-out)),outline-color .25s}
-.collage.is-tidy .piece.is-on:not(.is-big){--s:1;outline-color:var(--ink)}
-.collage.is-tidy .piece.is-on:not(.is-big):not(.cutout):not(.mock){box-shadow:var(--shadow)}
+/* The current picture in the phone rows (Kris, 25 Nov): growing 10% swallowed the 10 px gaps round it ("i dont think
+   the gaps between those frames are equal"), and a ring instead was too much ("i dont like the white stroke"). It grows
+   a little: 3 px each side whatever its size (--pop-s, worked out in next.js, tidyPhone), with the stronger shadow, so
+   the gaps round it stay open. Laptops still grow by --pop-scale. */
+.collage.is-tidy .piece.is-on:not(.is-big){--s:var(--pop-s,1.03)}
 .piece img{display:block;width:100%;height:auto;border-radius:inherit}
 .piece.ph-piece{height:var(--h);display:grid;place-items:center;text-align:center;padding:10px;border:1.5px dashed var(--ink-3);background:var(--card);box-shadow:none;font:var(--label);letter-spacing:var(--label-ls);color:var(--ink-3)}
 .piece.ph-piece.is-on{box-shadow:var(--pop);color:var(--ink)}
@@ -207,6 +209,7 @@ button.piece{cursor:pointer}
 /* Posters pop like blend's pieces (3A) under the mouse or keyboard focus. A click or tap opens the big view. */
 .piece.poster-btn{cursor:zoom-in}
 .piece.poster-btn.is-open{--s:var(--pop-scale);z-index:5;box-shadow:var(--pop)}  /* stays popped behind the big view instead of shrinking back */
+.piece.mock.poster-btn.is-open{box-shadow:none;filter:var(--drop-pop)}  /* the magazine pieces open the big view on phones too (25 Nov); they have no card */
 
 /* Big view: the poster as tall as the screen allows, on a dark backdrop. A click anywhere or Esc closes it. */
 .viewer{width:100vw;height:100vh;height:100svh;max-width:none;max-height:none;margin:0;padding:0;border:0;background:transparent;display:grid;place-items:center;cursor:zoom-out}
@@ -343,7 +346,7 @@ html:has(.viewer[open]),html:has(.pv[open]){overflow:hidden;padding-right:var(--
    it's centred on the picture block (--tb-*, the sums the project button uses). The frames dim behind it and the tour
    doesn't mark them. Unlocked, all of this goes. */
 #retouch.is-locked .collage .piece{opacity:.55}
-#retouch.is-locked .collage .piece.is-on{--s:1;outline-color:transparent;box-shadow:none}
+#retouch.is-locked .collage .piece.is-on{--s:1;box-shadow:none}
 #retouch.is-locked .rt-lock{z-index:8;width:min(24rem,calc(100% - 32px));max-width:none;padding:20px;border:1px solid var(--line);border-radius:18px;background:var(--card);box-shadow:var(--pop)}
 :root:not(.is-app) #retouch.is-locked .p-body{display:contents}
 :root:not(.is-app) #retouch.is-locked .rt-lock{grid-area:collage;align-self:center;justify-self:center;position:relative}
@@ -387,8 +390,8 @@ html:has(.viewer[open]),html:has(.pv[open]){overflow:hidden;padding-right:var(--
 .piece.rt.rt-orig .rt-before{opacity:1;transition:none}
 .piece.rt.rt-fade .rt-before{transition:opacity 1.2s ease-in-out}
 @media (max-width:699px){.piece.rt:not(.is-big) .rt-tag{display:none}}  /* phones: too big for the small photos; it shows once a photo is enlarged */
-.piece.cutout{background:none;box-shadow:none;border-radius:0;filter:drop-shadow(var(--logo-shadow))}
-.piece.cutout.is-on{box-shadow:none;filter:drop-shadow(var(--logo-shadow-pop))}
+.piece.cutout{background:none;box-shadow:none;border-radius:0;filter:var(--logo-edge) drop-shadow(var(--logo-shadow))}
+.piece.cutout.is-on{box-shadow:none;filter:var(--logo-edge) drop-shadow(var(--logo-shadow-pop))}
 /* Click to enlarge (Kris, 13 Nov): the piece straightens and grows in place, kept inside the collage, so screens are readable
    while the rest of the collage stays visible. main.js works out --tx/--ty/--s; posters keep their full-screen big view. */
 .project[data-story] .piece[data-step]{cursor:zoom-in}
