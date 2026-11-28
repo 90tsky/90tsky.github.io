@@ -168,7 +168,7 @@
   const clipped = new Set();
   const barIndex = id => cards.findIndex(c => c.dataset.id === id);
   const mover = s => s.querySelector('.collage, .map');                      // what holds the frames
-  const frames = s => { const m = mover(s); return m ? [...m.children] : []; };
+  const frames = s => { const m = mover(s); return m ? [...m.children].filter(f => !f.classList.contains('shade')) : []; };
   const fader = s => s.querySelector('.p-body') || s.querySelector('.in');   // what dissolves
   // Where a frame is on the track: u from -1 (out on the right) through 0 (in place) to 1 (out at the top).
   const ride = new WeakMap();
@@ -774,7 +774,7 @@
       tpl.innerHTML = col.outerHTML;
       const c = tpl.content.firstElementChild;
       c.querySelectorAll('[id]').forEach(x => x.removeAttribute('id'));
-      c.querySelectorAll('canvas').forEach(x => x.remove());  // Silver Bliss: the still logo shows instead of the live one
+      c.querySelectorAll('canvas,.shade').forEach(x => x.remove());  // Silver Bliss: the still logo shows instead of the live one
       c.querySelectorAll('.is-on,.is-lit,.is-big,.is-open,.is-playing,.is-live').forEach(x => x.classList.remove('is-on', 'is-lit', 'is-big', 'is-open', 'is-playing', 'is-live'));
       mini.append(c);
     }
@@ -1119,4 +1119,82 @@
       raf = requestAnimationFrame(tick);
     }
   }
+
+  // ---------- Layers of shadow (Kris, 28 Nov) ----------
+  // The page is layer 1, the pictures at rest layer 2, a picture that pops layer 3 (hover, focus, the current step) and an
+  // enlarged one layer 4. A popped picture's shadow lands on the pictures round it with a short offset (--lift, drawn with
+  // the picture) and on the page with a longer one (--lift-far): that one is drawn by a shade placed under every picture,
+  // so the pictures at rest cover it and only the page shows it. Where the shadow crosses a neighbour, it steps in, which
+  // shows the neighbour sits higher than the page. The shade copies the picture's place, tilt, size and movement every
+  // frame while either is moving, and rests otherwise.
+  const shades = new Map(), liveShades = new Set();
+  const LIFTED = '.collage > .piece:is(:hover,:focus-visible,.is-on,.is-lit,.is-big,.is-open)';
+  const layerOf = p => {
+    if (!p.isConnected || !p.offsetParent || p.closest('.map-mini,.is-locked') || p.classList.contains('sb-chrome')) return 2;
+    // Logos lift on a card only on hover, lit or enlarged; otherwise their own shadow follows the outline.
+    if (p.classList.contains('cutout') && !p.matches(':hover,.is-lit,.is-big')) return 2;
+    // Laptops: while one picture is enlarged, the rest dim and lie flat.
+    if (isApp() && !p.classList.contains('is-big') && p.parentElement.querySelector(':scope > .is-big')) return 2;
+    const z = parseInt(getComputedStyle(p).zIndex, 10) || 0;
+    return z >= 20 ? 4 : z >= 5 ? 3 : 2;
+  };
+  const shadeFor = p => {
+    let s = shades.get(p);
+    if (s) return s;
+    s = document.createElement('span');
+    s.className = 'shade';
+    s.setAttribute('aria-hidden', 'true');
+    if (p.classList.contains('mock')) {  // the magazine mock-ups: their own outline makes the shadow
+      const im = p.querySelector('img');
+      if (im) { const c = new Image(); c.alt = ''; c.decoding = 'async'; c.src = im.currentSrc || im.src; s.append(c); s.classList.add('is-sil'); }
+    }
+    if (p.classList.contains('cutout')) s.dataset.pad = '14';  // logos lift on a card 14 px round them (::before)
+    p.parentElement.prepend(s);
+    shades.set(p, s);
+    return s;
+  };
+  const placeShade = (p, s) => {
+    const cs = getComputedStyle(p), t = cs.transform;
+    const m = t && t !== 'none' ? new DOMMatrixReadOnly(t) : null, k = m ? Math.hypot(m.a, m.b) || 1 : 1;
+    const pad = (Number(s.dataset.pad) || 0) / k, st = s.style;
+    st.left = p.offsetLeft - pad + 'px';
+    st.top = p.offsetTop - pad + 'px';
+    st.width = p.offsetWidth + 2 * pad + 'px';
+    st.height = p.offsetHeight + 2 * pad + 'px';
+    st.transform = t;
+    st.translate = cs.translate;
+    st.rotate = cs.rotate;
+    st.scale = cs.scale;
+    st.opacity = cs.opacity;
+    st.borderRadius = pad ? 16 / k + 'px' : cs.borderRadius;
+  };
+  const running = e => e.getAnimations().some(a => a.playState === 'running' || a.pending);
+  function syncShades() {
+    let moving = false;
+    new Set([...document.querySelectorAll(LIFTED), ...liveShades]).forEach(p => {
+      const layer = layerOf(p);
+      if (layer === 2 && !shades.has(p)) return;
+      const s = shadeFor(p);
+      s.classList.toggle('is-3', layer === 3);
+      s.classList.toggle('is-4', layer === 4);
+      if (p.offsetParent) placeShade(p, s);
+      const busy = running(p) || running(s) || (!!s.firstElementChild && running(s.firstElementChild));
+      if (busy) moving = true;
+      if (layer > 2 || busy) liveShades.add(p); else liveShades.delete(p);
+    });
+    return moving;
+  }
+  let shadeRaf = 0, shadeUntil = 0;
+  const shadeTick = t => {
+    shadeRaf = 0;
+    if (syncShades() || t < shadeUntil) shadeRaf = requestAnimationFrame(shadeTick);
+  };
+  const kickShades = () => {
+    shadeUntil = performance.now() + 150;  // a few frames, for changes that start no transition (reduced motion)
+    if (!shadeRaf) shadeRaf = requestAnimationFrame(shadeTick);
+  };
+  ['pointerover', 'pointerout', 'focusin', 'focusout', 'transitionrun', 'wheel', 'click', 'keydown'].forEach(type => document.addEventListener(type, kickShades, { passive: true }));
+  addEventListener('resize', kickShades);
+  new MutationObserver(kickShades).observe(list, { subtree: true, attributes: true, attributeFilter: ['class'] });
+  kickShades();
 })();

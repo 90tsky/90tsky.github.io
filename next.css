@@ -8,6 +8,17 @@
   /* The same two shadows as drop shadows, for cut-outs (the mock-ups): they follow the outline instead of a card. */
   --drop:drop-shadow(0 1px 2px rgb(20 20 20 / .08)) drop-shadow(0 12px 32px rgb(20 20 20 / .14));
   --drop-pop:drop-shadow(0 4px 10px rgb(20 20 20 / .12)) drop-shadow(0 30px 64px rgb(20 20 20 / .30));
+  /* Four layers (Kris, 28 Nov): the page (1), the pictures at rest (2), a picture that pops (3) and an enlarged one (4).
+     A shadow falls further the more layers it drops: a popped picture's shadow lands on the pictures round it one layer
+     down (--lift, drawn with the picture) and on the page two layers down (--lift-far, drawn by a shade under all the
+     pictures, so only the page shows it). An enlarged one: two layers onto the pictures, three onto the page. */
+  --lift:0 1px 3px rgb(20 20 20 / .12), 0 8px 16px rgb(20 20 20 / .22);
+  --lift-far:0 34px 56px rgb(20 20 20 / .26);
+  --lift-4:var(--pop);
+  --lift-4-far:0 50px 100px rgb(20 20 20 / .22);
+  --lift-none:0 34px 56px rgb(20 20 20 / 0);
+  --drop-lift:drop-shadow(0 1px 3px rgb(20 20 20 / .12)) drop-shadow(0 8px 16px rgb(20 20 20 / .22));
+  --sil:.2;  /* the magazine mock-ups' long shadow: their own outline, blacked out and blurred, at this strength */
   --logo-shadow:0 14px 18px rgb(20 20 20 / .24);
   /* A faint light edge round the light design's dark logos: lost in the light page, but it outlines them when a browser
      darkens the page itself (Samsung Internet does by default, 25 Nov, and ignores the site's own dark design). */
@@ -35,6 +46,12 @@
   --pop:0 4px 10px rgb(0 0 0 / .4), 0 30px 64px rgb(0 0 0 / .7);
   --drop:drop-shadow(0 1px 2px rgb(0 0 0 / .4)) drop-shadow(0 12px 32px rgb(0 0 0 / .5));
   --drop-pop:drop-shadow(0 4px 10px rgb(0 0 0 / .4)) drop-shadow(0 30px 64px rgb(0 0 0 / .7));
+  --lift:0 1px 3px rgb(0 0 0 / .45), 0 8px 16px rgb(0 0 0 / .6);
+  --lift-far:0 34px 56px rgb(0 0 0 / .6);
+  --lift-4-far:0 50px 100px rgb(0 0 0 / .6);
+  --lift-none:0 34px 56px rgb(0 0 0 / 0);
+  --drop-lift:drop-shadow(0 1px 3px rgb(0 0 0 / .45)) drop-shadow(0 8px 16px rgb(0 0 0 / .6));
+  --sil:.5;
   --logo-shadow:0 14px 22px rgb(0 0 0 / .7);
   --logo-edge:drop-shadow(0 0 0 transparent);
   --logo-shadow-pop:0 24px 30px rgb(0 0 0 / .8);
@@ -186,12 +203,23 @@ button.piece{cursor:pointer}
 .collage.is-tidy .piece.is-on:not(.is-big){--s:var(--pop-s,1.03)}
 .piece img{display:block;width:100%;height:auto;border-radius:inherit}
 .piece.ph-piece{height:var(--h);display:grid;place-items:center;text-align:center;padding:10px;border:1.5px dashed var(--ink-3);background:var(--card);box-shadow:none;font:var(--label);letter-spacing:var(--label-ls);color:var(--ink-3)}
-.piece.ph-piece.is-on{box-shadow:var(--pop);color:var(--ink)}
+.piece.ph-piece.is-on{box-shadow:var(--lift);color:var(--ink)}
 /* One pop for every card in a collage (Kris, 18 Nov): it grows by --pop-scale and lifts (--pop) when the mouse is on it
    or it has keyboard focus, and the current step's card in a project stays popped (3A). Change --pop-scale or --pop and
    every card follows. Cut-out logos lift on their card instead of a shadow; Silver Bliss's live logo doesn't pop. */
-.piece.is-on,.piece:focus-visible{--s:var(--pop-scale);z-index:5;box-shadow:var(--pop)}
-@media (hover:hover){.collage .piece:not(.sb-chrome):hover{--s:var(--pop-scale);z-index:5;box-shadow:var(--pop)}}
+.piece.is-on,.piece:focus-visible{--s:var(--pop-scale);z-index:5;box-shadow:var(--lift)}
+@media (hover:hover){.collage .piece:not(.sb-chrome):hover{--s:var(--pop-scale);z-index:5;box-shadow:var(--lift)}}
+/* The long shadow onto the page (layers, at the top): one shade per popped picture, under every picture, copying its
+   place and movement (next.js, shades). It fades in and out with the pop. The mock-ups' shade is their outline. */
+.shade{position:absolute;left:0;top:0;z-index:0;pointer-events:none;border-radius:14px;box-shadow:var(--lift-none);
+  transition:box-shadow var(--pop-dur,.4s) var(--pop-ease,var(--ease-out))}
+.shade.is-3{box-shadow:var(--lift-far)}
+.shade.is-4{box-shadow:var(--lift-4-far)}
+.shade.is-sil{box-shadow:none}
+.shade.is-sil img{display:block;width:100%;height:auto;filter:brightness(0) blur(26px);opacity:0;
+  transition:opacity var(--pop-dur,.4s) var(--pop-ease,var(--ease-out)),translate var(--pop-dur,.4s) var(--pop-ease,var(--ease-out))}
+.shade.is-sil.is-3 img{opacity:var(--sil);translate:0 30px}
+.shade.is-sil.is-4 img{opacity:var(--sil);translate:0 50px}
 .ph-box{position:absolute;inset:14% 16%;border:1.5px dashed var(--ink-3);border-radius:16px;display:grid;place-items:center;text-align:center;padding:16px;font:var(--label);letter-spacing:var(--label-ls);text-transform:uppercase;color:var(--ink-3)}
 
 /* ---------- animated posters (DESIGN.md, Animated posters) ----------
@@ -208,8 +236,8 @@ button.piece{cursor:pointer}
 
 /* Posters pop like blend's pieces (3A) under the mouse or keyboard focus. A click or tap opens the big view. */
 .piece.poster-btn{cursor:zoom-in}
-.piece.poster-btn.is-open{--s:var(--pop-scale);z-index:5;box-shadow:var(--pop)}  /* stays popped behind the big view instead of shrinking back */
-.piece.mock.poster-btn.is-open{box-shadow:none;filter:var(--drop-pop)}  /* the magazine pieces open the big view on phones too (25 Nov); they have no card */
+.piece.poster-btn.is-open{--s:var(--pop-scale);z-index:5;box-shadow:var(--lift)}  /* stays popped behind the big view instead of shrinking back */
+.piece.mock.poster-btn.is-open{box-shadow:none;filter:var(--drop-lift)}  /* the magazine pieces open the big view on phones too (25 Nov); they have no card */
 
 /* Big view: the poster as tall as the screen allows, on a dark backdrop. A click anywhere or Esc closes it. */
 .viewer{width:100vw;height:100vh;height:100svh;max-width:none;max-height:none;margin:0;padding:0;border:0;background:transparent;display:grid;place-items:center;cursor:zoom-out}
@@ -324,8 +352,9 @@ html:has(.viewer[open]),html:has(.pv[open]){overflow:hidden;padding-right:var(--
 /* Their shadows are the posters' (Kris, 25 Nov: "droped shadows on the magazine and cover same as the posters keep
    everything concistent"): --shadow at rest and --pop when they pop, as drop shadows round the outline. */
 .piece.mock{filter:var(--drop);transition:transform var(--pop-dur,.4s) var(--pop-ease,var(--ease-out)),filter var(--pop-dur,.4s) var(--pop-ease,var(--ease-out))}
-.piece.mock.is-on,.piece.mock:focus-visible,.project[data-story] .piece.mock.is-big,.is-app .piece.mock.is-lit{filter:var(--drop-pop)}
-@media (hover:hover){.collage .piece.mock:hover{filter:var(--drop-pop)}}
+.piece.mock.is-on,.piece.mock:focus-visible,.is-app .piece.mock.is-lit{filter:var(--drop-lift)}
+@media (hover:hover){.collage .piece.mock:hover{filter:var(--drop-lift)}}
+.project[data-story] .piece.mock.is-big{filter:var(--drop-pop)}
 .is-app .collage .piece.mock{transition:transform var(--pop-dur,.4s) var(--pop-ease,var(--ease-out)),filter var(--pop-dur,.4s) var(--pop-ease,var(--ease-out)),opacity .3s}
 
 /* Retouch (22 Nov): the retouched photo, with the original over it, hidden. The original fades in under the mouse, as in
@@ -395,16 +424,17 @@ html:has(.viewer[open]),html:has(.pv[open]){overflow:hidden;padding-right:var(--
 /* Click to enlarge (Kris, 13 Nov): the piece straightens and grows in place, kept inside the collage, so screens are readable
    while the rest of the collage stays visible. main.js works out --tx/--ty/--s; posters keep their full-screen big view. */
 .project[data-story] .piece[data-step]{cursor:zoom-in}
-.project[data-story] .piece.is-big{transform:translate(var(--tx,0px),var(--ty,0px)) scale(var(--s,1));z-index:20;box-shadow:var(--pop);cursor:zoom-out}
+.project[data-story] .piece.is-big{transform:translate(var(--tx,0px),var(--ty,0px)) scale(var(--s,1));z-index:20;box-shadow:var(--lift-4);cursor:zoom-out}
 /* A cut-out logo gets a card while it's big (Kris, 18 Nov), so it doesn't sit on top of the logos underneath.
    The card is drawn behind the logo and grows with it; the sizes are divided by the zoom (--s) so the padding (14px),
    corners and shadow look the same at any size. No stroke (Kris, 18 Nov). */
 .project[data-story] .piece.cutout::before{content:"";position:absolute;z-index:-1;inset:calc(-14px / var(--s,1));border-radius:calc(16px / var(--s,1));
   background:var(--card);
-  box-shadow:0 calc(4px / var(--s,1)) calc(10px / var(--s,1)) rgb(0 0 0 / .14),0 calc(22px / var(--s,1)) calc(48px / var(--s,1)) rgb(0 0 0 / .3);
+  box-shadow:0 calc(1px / var(--s,1)) calc(3px / var(--s,1)) rgb(0 0 0 / .12),0 calc(8px / var(--s,1)) calc(16px / var(--s,1)) rgb(0 0 0 / .22);
   opacity:0;transition:opacity .3s var(--ease-out)}
 .project[data-story] .piece.cutout.is-big{box-shadow:none;filter:none}
-.project[data-story] .piece.cutout.is-big::before{opacity:1}
+.project[data-story] .piece.cutout.is-big::before{opacity:1;
+  box-shadow:0 calc(4px / var(--s,1)) calc(10px / var(--s,1)) rgb(0 0 0 / .14),0 calc(22px / var(--s,1)) calc(48px / var(--s,1)) rgb(0 0 0 / .3)}
 /* Hover (or keyboard focus): the logo lifts on its card like a poster does, so it doesn't sit on the logos underneath. */
 @media (hover:hover){
   .collage .piece.cutout:hover{box-shadow:none}
@@ -526,7 +556,7 @@ main{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}  /* room for t
 /* Pointing at a paragraph pops its pictures; pointing at a picture lights its paragraph (if it's in view). The other
    paragraphs step back. */
 .is-app .steps:has(.is-lit) .step:not(.is-lit){opacity:.4}
-.is-app .piece.is-lit{--s:var(--pop-scale);z-index:5;box-shadow:var(--pop)}
+.is-app .piece.is-lit{--s:var(--pop-scale);z-index:5;box-shadow:var(--lift)}
 .is-app .project[data-story] .piece.cutout.is-lit{box-shadow:none;filter:none}
 .is-app .project[data-story] .piece.cutout.is-lit::before{opacity:1}
 
