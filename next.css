@@ -98,11 +98,13 @@ button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
 .p-body>.p-link,.p-body>.sb-cam,.ask{transition:scale .2s var(--ease-out),background-color .2s,border-color .2s,color .2s,box-shadow .2s}
 @media (hover:hover){
   .p-body>.p-link:hover,.p-body>.sb-cam:hover,.ask:hover{scale:1.08}
-  .p-body>.p-link:hover,.p-body>.sb-cam:not([aria-pressed="true"]):hover,.ask:hover{background:color-mix(in srgb,var(--ink) 92%,var(--on-ink));border-color:color-mix(in srgb,var(--ink) 92%,var(--on-ink));box-shadow:0 1px 2px rgb(0 0 0 / .3),0 1px 3px 1px rgb(0 0 0 / .15)}
+  /* Hover turns them the red of the step numbers (Kris, 28 Nov: "the same color as the numbers"); their text stays
+     the page colour, 4.85:1 on the light design's red, 6.5:1 on the dark one's (pressed: 6.0 and 5.1). */
+  .p-body>.p-link:hover,.p-body>.sb-cam:not([aria-pressed="true"]):hover,.ask:hover{background:var(--red);border-color:var(--red);box-shadow:0 1px 2px rgb(0 0 0 / .3),0 1px 3px 1px rgb(0 0 0 / .15)}
   .p-body>.p-link:active,.p-body>.sb-cam:active,.ask:active{scale:1.04}
 }
 .p-body>.p-link:active,.p-body>.sb-cam:active,.ask:active{box-shadow:none}
-.p-body>.p-link:active,.p-body>.sb-cam:not([aria-pressed="true"]):active,.ask:active{background:color-mix(in srgb,var(--ink) 90%,var(--on-ink));border-color:color-mix(in srgb,var(--ink) 90%,var(--on-ink))}
+.p-body>.p-link:active,.p-body>.sb-cam:not([aria-pressed="true"]):active,.ask:active{background:color-mix(in srgb,var(--red) 88%,#000);border-color:color-mix(in srgb,var(--red) 88%,#000)}
 @media (hover:none){.p-body>.p-link:active,.p-body>.sb-cam:active,.ask:active{scale:.97}}
 .p-body>.p-link:focus-visible,.p-body>.sb-cam:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 @media (prefers-reduced-motion:reduce){.p-body>.p-link,.p-body>.sb-cam,.ask{scale:none!important}}
